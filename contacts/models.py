@@ -1,11 +1,11 @@
 from django.db import models
 from django_countries.fields import CountryField
-from django.core.validators import MinValueValidator, MaxValueValidator, EmailValidator, URLValidator
+from django.core.validators import EmailValidator, URLValidator
 
 
 class Email(models.Model):
     title = models.CharField(max_length=256, null=False, blank=False)
-    email = models.EmailField(null=False, blank=False, validators=(EmailValidator, ))
+    email = models.EmailField(null=False, blank=False, unique=True, validators=(EmailValidator, ))
 
 
 class Address(models.Model):
@@ -47,8 +47,10 @@ class Company(models.Model):
     name_en = models.CharField(max_length=128, null=True, blank=True)
     website = models.URLField(max_length=512, null=True, blank=True, validators=[URLValidator, ])
     telephone = models.CharField(max_length=32, null=True, blank=True)
-    # todo: add contact
-    contact = models.ManyToManyField(Contact, null=True, blank=True)
-    # todo: add shenase meli, code eqtesadi, code kargah, shomare sabt
-    # todo: add and email in here
-    # todo: add validator to the tables
+    economic_code = models.CharField(max_length=16, null=True, blank=True)
+    national_id = models.CharField(max_length=16, null=True, blank=True)
+    workshop_code = models.CharField(max_length=16, null=True, blank=True)
+    registration_number = models.CharField(max_length=16, null=True, blank=True)
+    # todo: add email in here
+    contact = models.ManyToManyField(Contact, null=True, blank=True, verbose_name="Employee(s)")
+
