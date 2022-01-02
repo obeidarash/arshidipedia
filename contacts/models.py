@@ -5,7 +5,7 @@ from django.core.validators import EmailValidator, URLValidator
 
 class Email(models.Model):
     title = models.CharField(max_length=256, null=False, blank=False)
-    email = models.EmailField(null=False, blank=False, unique=True, validators=(EmailValidator, ))
+    email = models.EmailField(null=False, blank=False, unique=True, validators=(EmailValidator,))
 
 
 class Address(models.Model):
@@ -52,5 +52,13 @@ class Company(models.Model):
     workshop_code = models.CharField(max_length=16, null=True, blank=True)
     registration_number = models.CharField(max_length=16, null=True, blank=True)
     # todo: add email in here
-    contact = models.ManyToManyField(Contact, null=True, blank=True, verbose_name="Employee(s)")
+    contact = models.ManyToManyField(Contact, blank=True, verbose_name="Employee(s)")
 
+    def __str__(self):
+        if self.name_fa and self.name_en:
+            return self.name_fa + ' / ' + self.name_en
+        if self.name_fa:
+            return self.name_fa
+        if self.name_en:
+            return self.name_en
+        return "No name!"
