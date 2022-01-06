@@ -4,7 +4,7 @@ from .models import Pay, Category, BankAccount
 
 @admin.register(Pay)
 class PayAdmin(admin.ModelAdmin):
-    list_display = ('title', 'payer', 'category', 'price')
+    list_display = ('title', 'payer', 'category', 'price',)
     search_fields = ('title', 'price',)
     autocomplete_fields = ('category',)
     list_filter = ['payer', 'account', ]
@@ -15,6 +15,7 @@ class PayAdmin(admin.ModelAdmin):
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('title',)
     search_fields = ('title',)
+    prepopulated_fields = {"slug": ("title",)}
 
 
 @admin.register(BankAccount)
