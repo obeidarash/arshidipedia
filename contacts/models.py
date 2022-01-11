@@ -54,6 +54,10 @@ class Company(models.Model):
     # todo: add email in here
     contact = models.ManyToManyField(Contact, blank=True, verbose_name="Employee(s)")
 
+    class Meta:
+        verbose_name = 'Company'
+        verbose_name_plural = "Companies"
+
     def __str__(self):
         if self.name_fa and self.name_en:
             return self.name_fa + ' / ' + self.name_en
