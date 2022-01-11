@@ -1,10 +1,16 @@
 from django.contrib import admin
 from .models import Pay, Category, BankAccount
 
+@admin.register(Pay)
+class PayAdmin(admin.ModelAdmin):
+    list_display = ('title', 'employer_signature', 'location', 'date_of_invoice', 'status',)
+    search_fields = ('title', )
+
+
 
 @admin.register(Pay)
 class PayAdmin(admin.ModelAdmin):
-    list_display = ('title', 'payer', 'category', 'price',)
+    list_display = ('title', 'payer', 'category', 'price', )
     search_fields = ('title', 'price',)
     autocomplete_fields = ('category',)
     list_filter = ['payer', 'account', ]
