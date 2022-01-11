@@ -4,6 +4,34 @@ from djmoney.models.fields import MoneyField
 from contacts.models import Contact, Company
 
 
+class OfficialInvoices(models.Model):
+    LOCATION = [
+        ('company_office', 'Company Office'),
+        ('employer_office', 'Employer Office'),
+        ]
+    STATUS = [
+        ('current', 'Current'),
+        ('invalid', 'Invalid'),
+        ('lost', 'Lost'),
+        ]
+    # todo: employer (fetch form contact and companye)
+    # todo: convert date of invoice to shamsi
+    # todo: add date of create and update
+    title = models.CharField(max_length=64, null=False, blank=False, unique=True)
+    employer_signature = models.BooleanField(null=False, blank=False, default=False)
+    location = models.CharField(max_length=64, choices=LOCATION, null=False, blank=False,
+                               default=(('company_office'), ('Company Office')))
+    status = models.CharField(max_length=64, choices=STATUS, null=False, blank=False,
+                               default=(('current'), ('Current')))
+    # This can be integer Field
+    serial_number = models.CharField(max_length=32, null=False, blank=False)
+    date_of_invoice = models.DateField(null=False, blank=False)
+    comment = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return self.title
+
+
 class Category(models.Model):
     title = models.CharField(max_length=64, null=False, blank=False, unique=True)
     slug = models.SlugField(max_length=128, null=False, blank=False, unique=True)
