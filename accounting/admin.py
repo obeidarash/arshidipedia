@@ -1,16 +1,23 @@
 from django.contrib import admin
-from .models import Pay, Category, BankAccount, Received
+from .models import Pay, Category, BankAccount, Received, OfficialInvoices, Salary
+
+
+@admin.register(Salary)
+class SalaryAdmin(admin.ModelAdmin):
+    list_display = ('to', 'price')
+    search_fields = ('to',)
+
+
+@admin.register(OfficialInvoices)
+class OfficialInvoicesAdmin(admin.ModelAdmin):
+    list_display = ('title', 'location', 'date_of_invoice', 'status', 'employer_signature')
+    search_fields = ('title',)
+    # list_editable = ('employer_signature',)
+
 
 @admin.register(Pay)
 class PayAdmin(admin.ModelAdmin):
-    list_display = ('title', 'employer_signature', 'location', 'date_of_invoice', 'status',)
-    search_fields = ('title', )
-
-
-
-@admin.register(Pay)
-class PayAdmin(admin.ModelAdmin):
-    list_display = ('title', 'payer', 'category', 'price', )
+    list_display = ('title', 'payer', 'category', 'price',)
     search_fields = ('title', 'price',)
     autocomplete_fields = ('category',)
     list_filter = ['payer', 'account', 'date_of_payment']
@@ -27,6 +34,7 @@ class CategoryAdmin(admin.ModelAdmin):
 class ReceivedAdmin(admin.ModelAdmin):
     list_display = ('title', 'price')
     search_fields = ('title',)
+    autocomplete_fields = ('from_contact', 'from_company',)
 
 
 @admin.register(BankAccount)
