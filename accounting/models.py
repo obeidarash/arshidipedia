@@ -64,6 +64,7 @@ class BankAccount(models.Model):
 class Salary(models.Model):
     to = models.ForeignKey(User, null=False, blank=False, on_delete=models.CASCADE, default=False)
     price = models.CharField(max_length=32, null=False, blank=False)
+    price_currency = models.CharField(max_length=32, choices=CURRENCY, null=False, blank=True, default=CURRENCY[0])
     bank_account = models.ForeignKey(BankAccount, null=False, blank=False, on_delete=models.CASCADE, )
     date_of_payment = models.DateField(null=False, blank=False)
     comment = models.TextField(null=True, blank=True)
@@ -77,6 +78,7 @@ class Salary(models.Model):
 class Received(models.Model):
     title = models.CharField(max_length=256, null=False, blank=False)
     price = models.CharField(max_length=32, null=False, blank=False)
+    price_currency = models.CharField(max_length=32, choices=CURRENCY, null=False, blank=True, default=CURRENCY[0])
     to_bank_account = models.ForeignKey(BankAccount, null=False, blank=False, on_delete=models.CASCADE, )
     from_contact = models.ForeignKey(Contact, null=True, blank=True, on_delete=models.CASCADE)
     from_company = models.ForeignKey(Company, null=True, blank=True, on_delete=models.CASCADE)
@@ -103,8 +105,8 @@ class Pay(models.Model):
     to = models.CharField(max_length=256, null=True, blank=False, help_text='Like Seven Host or Korosh Walmart')
     payer = models.ForeignKey(User, null=False, blank=False, on_delete=models.CASCADE, default=False)
     # todo: study about on_delete
-    source = models.CharField(max_length=32, choices=SOURCE, null=False, blank=False, default=SOURCE[0])
-    # todo: account can be optional
+    source = models.CharField(max_length=32, choices=SOURCE, null=False, blank=False, default=SOURCE[0],
+                              help_text='it means you spend money form your pocket or the company')
     account = models.ForeignKey(BankAccount, null=True, blank=True, on_delete=models.CASCADE, default=False)
     date_of_payment = models.DateField(null=False, blank=False)
     invoice = models.CharField(max_length=64, choices=INVOICE, null=False, blank=False,
