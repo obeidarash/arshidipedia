@@ -5,18 +5,31 @@
     <title>Arshdipedia</title>
 </head>
 <body>
-{% for user in users %}
-    <h3>{{ user.username }}</h3>
-    {% for pay in pays %}
-        {% if pay.payer.id == user.id %}
-            {{ pay.price }}
-            <br>
-        {% endif %}
-    {% endfor %}
-    <hr>
-{% endfor %}
-<hr>
-{{ li }}
+<style>
+    tr > th {
+        font-weight: bold;
+        padding: 10px;
+        border: 1px solid gray;
+        border-collapse: inherit;
+    }
 
+    td {
+
+    }
+</style>
+<table>
+    <thead>
+    <tr>
+        <th>Payer</th>
+        <th>Payer</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Alireza</td>
+        <td>Alireza</td>
+    </tr>
+    </tbody>
+</table>
 </body>
 </html>
