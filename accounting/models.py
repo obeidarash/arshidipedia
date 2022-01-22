@@ -18,7 +18,9 @@ class OfficialInvoices(models.Model):
         ('invalid', 'Invalid'),
         ('lost', 'Lost'),
     ]
-    # todo: employer (fetch form contact and companye)
+    # todo: employer (fetch form contact and companye : can you fetch both of them in one model?)
+    contact = models.ForeignKey(Contact, null=True, blank=True, on_delete=models.CASCADE)
+    company = models.ForeignKey(Company, null=True, blank=True, on_delete=models.CASCADE)
     # todo: convert date of invoice to shamsi
     title = models.CharField(max_length=64, null=False, blank=False, unique=True)
     location = models.CharField(max_length=64, choices=LOCATION, null=False, blank=False,
