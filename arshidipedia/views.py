@@ -7,31 +7,25 @@ from django.contrib.auth.models import User
 @login_required(login_url='/admin')
 def home(request):
     users = User.objects.all()
-    pays = Pay.objects.filter(source='company')
-    test = [
-        {
-            'name': "obeid",
-            'prices': [12200, 22222]
-        },
-        {
-            'name': 'ali',
-            'prices': [1, 2, 1, 2]
-        }
-    ]
-    payment = {}
-    costs = []
+    pays = Pay.objects.filter(source='employer')
 
-    al = []
+    # returns employee costs based on his pocket
+    costs = []
+    all_payments_by_user = []
     for user in users:
         for pay in pays:
-            if pay.payer.id == user.id:
-                costs.append(pay.price)
-        username = user.username
-        payment['name'] = username
-        payment['costs'] = costs
-        al.append(payment)
+            if user.id == pay.payer.id:
+                costs.append(int(pay.price))
+        sum_of_costs = sum(costs)
+        payments = {
+            'name': user.username,
+            'costs': costs,
+        }
+        all_payments_by_user.append(payments)
+        costs = []
 
         context = {
-            'payment': al
+            'payment': all_payments_by_user
         }
+
     return render(request, 'index.html', context)
