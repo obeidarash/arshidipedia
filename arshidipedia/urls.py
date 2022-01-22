@@ -7,4 +7,4 @@ urlpatterns = [
 ]
 admin.site.site_header = "Arshidipedia Admin"
 admin.site.site_title = "Arshidipedia Admin Portal"
-admin.site.index_title = "Welcome to Arshidipedia CMS"
+admin.site.index_title = "Welcome to Arshidipedia Researcher Portal"
