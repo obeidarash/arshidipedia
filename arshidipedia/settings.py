@@ -25,7 +25,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'contacts',
     'accounting',
-    'djmoney',
     'jalali_date',
 ]
 
