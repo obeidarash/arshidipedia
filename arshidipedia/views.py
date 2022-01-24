@@ -14,12 +14,13 @@ def home(request):
     all_payments_by_user = []
     for user in users:
         for pay in pays:
-            if user.id == pay.payer.id:
+            # todo : you should add a field to the user model - for example: is_sharik not is_staff
+            if user.id == pay.payer.id and user.is_staff is True:
                 costs.append(int(pay.price))
-        sum_of_costs = sum(costs)
         payments = {
             'name': user.username,
             'costs': costs,
+            'sum': sum(costs)
         }
         all_payments_by_user.append(payments)
         costs = []

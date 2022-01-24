@@ -6,9 +6,10 @@
 </head>
 <body>
 <div>
-    <h3>Costs base on user pocket</h3>
+    <h3>Costs base on user pocket when is staff (Sharik)</h3>
     {% for pay in payment %}
         <ul style="font-weight: bold">{{ pay.name|title }}</ul>
+        <ul style="font-weight: bold">Sum of Costs: {{ pay.sum|title }}</ul>
         {% for cost in pay.costs %}
             <li>{{ cost }}</li>
         {% endfor %}
