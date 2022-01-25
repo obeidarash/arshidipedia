@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'contacts',
     'accounting',
     'jalali_date',
+    # 'arshidipedia.models.User'
     # 'humanize'
 ]
 
@@ -108,3 +109,4 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# AUTH_USER_MODEL = 'accounting.User'
