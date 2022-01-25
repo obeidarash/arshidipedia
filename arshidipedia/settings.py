@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'contacts',
     'accounting',
     'jalali_date',
+    # 'humanize'
 ]
 
 MIDDLEWARE = [

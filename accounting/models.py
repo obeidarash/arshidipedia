@@ -98,7 +98,7 @@ class Pay(models.Model):
         ('company', 'Company')
     ]
     title = models.CharField(max_length=256, null=False, blank=False)
-    price = models.CharField(max_length=32, null=False, blank=False)
+    price = models.IntegerField(null=False, blank=False)
     price_currency = models.CharField(max_length=32, choices=CURRENCY, null=False, blank=True, default=CURRENCY[0])
     fee = models.CharField(max_length=32, null=True, blank=True)
     fe_currency = models.CharField(max_length=32, choices=CURRENCY, null=False, blank=True, default=CURRENCY[0])
