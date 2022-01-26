@@ -1,6 +1,5 @@
 from django.contrib import admin
 from .models import Pay, Category, BankAccount, Received, OfficialInvoices, Salary
-from jalali_date import datetime2jalali, date2jalali
 
 
 @admin.register(Salary)
