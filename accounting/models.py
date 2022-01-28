@@ -8,6 +8,13 @@ CURRENCY = [
 ]
 
 
+class PayManager(models.Manager):
+
+    # return pays base on source
+    def pay_source(self, ):
+        return self.get_queryset().filter(source='employer')
+
+
 class OfficialInvoices(models.Model):
     LOCATION = [
         ('company_office', 'Company Office'),
@@ -117,6 +124,7 @@ class Pay(models.Model):
     comment = models.TextField(max_length=2048, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    objects = PayManager()
 
     # todo: upload invoice
     # todo: add Shamsi date of payment

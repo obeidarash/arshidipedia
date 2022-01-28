@@ -1,13 +1,14 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from accounting.models import Salary, Pay
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 
 
 @login_required(login_url='/admin')
 def home(request):
     users = User.objects.all()
-    pays = Pay.objects.filter(source='employer')
+    pays = Pay.objects.pay_source()
+    group = Group.objects.all()
 
     # returns employee costs based on his pocket
     costs = []
@@ -26,7 +27,9 @@ def home(request):
         costs = []
 
         context = {
-            'payment': all_payments_by_user
+            'users': users,
+            'groups': group,
+            'payment': all_payments_by_user,
         }
 
     return render(request, 'index.html', context)
