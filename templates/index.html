@@ -8,7 +8,16 @@
 <div>
 {{ test }}
     <h3>Costs base on user pocket when is superuser (Sharik)</h3>
-    {% for pay in pays %}
+    {% for pay in pay_employer_partner %}
+        <ul style="font-weight: bold">{{ pay.user|title }}</ul>
+        <ul style="font-weight: bold">Sum of Costs: {{ pay.sum|title }}</ul>
+        {% for cost in pay.costs %}
+            <li>{{ cost }}</li>
+        {% endfor %}
+    {% endfor %}
+    <hr>
+    <h3>Costs base on user pocket when is worker </h3>
+    {% for pay in pay_employer_worker %}
         <ul style="font-weight: bold">{{ pay.user|title }}</ul>
         <ul style="font-weight: bold">Sum of Costs: {{ pay.sum|title }}</ul>
         {% for cost in pay.costs %}
