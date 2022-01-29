@@ -6,7 +6,7 @@
 </head>
 <body>
 <div>
-    <h3>Costs base on user pocket when is staff (Sharik)</h3>
+    <h3>Costs base on user pocket when is superuser (Sharik)</h3>
     {% for pay in payment %}
         <ul style="font-weight: bold">{{ pay.name|title }}</ul>
         <ul style="font-weight: bold">Sum of Costs: {{ pay.sum|title }}</ul>
@@ -15,13 +15,13 @@
         {% endfor %}
     {% endfor %}
     <hr>
-    {{ groups }}
-    <br>
-    {{ users }}
-    <br>
-    {% for group in groups %}
-        {{ group.name }}
+    <h3>incomes base on official account</h3>
+    {% for income in official_incomes %}
+        {{ income.title  }} / {{ income.price }}
+        <br>
     {% endfor %}
+    <h3>sum of incomes base on official account</h3>
+    {{ sum_of_official_incomes }}
 </div>
 </body>
 </html>

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Pay, Category, BankAccount, Received, OfficialInvoices, Salary
+from .models import Pay, Category, BankAccount, Income, OfficialInvoices, Salary
 
 
 @admin.register(Salary)
@@ -30,8 +30,8 @@ class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
 
 
-@admin.register(Received)
-class ReceivedAdmin(admin.ModelAdmin):
+@admin.register(Income)
+class IncomeAdmin(admin.ModelAdmin):
     list_display = ('title', 'price')
     search_fields = ('title',)
     autocomplete_fields = ('from_contact', 'from_company',)
@@ -39,5 +39,5 @@ class ReceivedAdmin(admin.ModelAdmin):
 
 @admin.register(BankAccount)
 class BankAccountAdmin(admin.ModelAdmin):
-    list_display = ('title', 'bank')
+    list_display = ('title', 'bank', 'is_official')
     search_fields = ('title',)

@@ -8,6 +8,18 @@ CURRENCY = [
 ]
 
 
+class IncomeManager(models.Manager):
+    def income_official_account(self):
+        return self.get_queryset().filter(to_bank_account__is_official=True)
+
+    def sum_income_official_account(self):
+        incomes = self.get_queryset().filter(to_bank_account__is_official=True)
+        list_of_income = []
+        for i in incomes:
+            list_of_income.append(int(i.price))
+        return sum(list_of_income)
+
+
 class PayManager(models.Manager):
 
     # return pays base on source
@@ -64,6 +76,7 @@ class BankAccount(models.Model):
     card_number = models.CharField(max_length=256, null=False, blank=False, unique=True)
     account_number = models.CharField(max_length=256, null=False, blank=False, unique=True)
     shaba = models.CharField(max_length=256, null=False, blank=False, unique=True)
+    is_official = models.BooleanField(default=False)
     comment = models.TextField(null=True, blank=True)
 
     def __str__(self):
@@ -84,7 +97,7 @@ class Salary(models.Model):
         verbose_name_plural = "Salaries"
 
 
-class Received(models.Model):
+class Income(models.Model):
     title = models.CharField(max_length=256, null=False, blank=False)
     price = models.CharField(max_length=32, null=False, blank=False)
     price_currency = models.CharField(max_length=32, choices=CURRENCY, null=False, blank=True, default=CURRENCY[0])
@@ -92,6 +105,10 @@ class Received(models.Model):
     from_contact = models.ForeignKey(Contact, null=True, blank=True, on_delete=models.CASCADE)
     from_company = models.ForeignKey(Company, null=True, blank=True, on_delete=models.CASCADE)
     comment = models.TextField(null=True, blank=True)
+    objects = IncomeManager()
+
+    def __str__(self):
+        return self.title
 
 
 class Pay(models.Model):
