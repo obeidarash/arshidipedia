@@ -20,11 +20,21 @@ class IncomeManager(models.Manager):
         return sum(list_of_income)
 
 
+class SalaryManager(models.Manager):
+    def salary(self):
+        salary = self.get_queryset().filter(to__is_superuser=False)
+        return salary
+
+
 class PayManager(models.Manager):
-    # returns pays base on source and partner (superuser)
+    # returns pays base on employer and user is worker (not supersuer)
+    # returns salaries of worker user
+    # it will calculate the salaries of the worker
     def pay_employer_worker(self):
         users = User.objects.filter(is_superuser=False)
         pays = self.get_queryset().filter(source='employer', payer__is_superuser=False)
+        salaries = Salary.objects.filter()
+        sals = []
         costs = []
         all_payments = []
         for user in users:
@@ -36,7 +46,14 @@ class PayManager(models.Manager):
                     'costs': costs,
                     'sum': sum(costs)
                 }
+            for salary in salaries:
+                if user.id == salary.to.id:
+                    sals.append(int(salary.price))
+                payments['salaries'] = sals
+                payments['salaries_sum'] = sum(sals)
+                payments['calculate_salary'] = sum(sals) - sum(costs)
             all_payments.append(payments)
+            sals = []
             costs = []
         return all_payments
 
@@ -125,6 +142,7 @@ class Salary(models.Model):
     comment = models.TextField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    objects = SalaryManager()
 
     class Meta:
         verbose_name_plural = "Salaries"
