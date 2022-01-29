@@ -22,9 +22,24 @@ class IncomeManager(models.Manager):
 
 class PayManager(models.Manager):
 
-    # return pays base on source
-    def pay_source(self, ):
-        return self.get_queryset().filter(source='employer')
+    # returns pays base on employer source
+    def pay_source_company(self):
+        users = User.objects.all()
+        pays = self.get_queryset().filter(source='employer')
+        costs = []
+        all_payments = []
+        for user in users:
+            for pay in pays:
+                if user.id == pay.payer.id:
+                    costs.append(int(pay.price))
+                payments = {
+                    'user': user.username,
+                    'costs': costs,
+                    'sum': sum(costs)
+                }
+            all_payments.append(payments)
+            costs = []
+        return all_payments
 
 
 class OfficialInvoices(models.Model):
