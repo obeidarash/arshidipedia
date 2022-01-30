@@ -51,7 +51,7 @@ class Company(models.Model):
     national_id = models.CharField(max_length=16, null=True, blank=True)
     workshop_code = models.CharField(max_length=16, null=True, blank=True)
     registration_number = models.CharField(max_length=16, null=True, blank=True)
-    # todo: add email in here
+    email = models.EmailField(null=True, blank=True)
     contact = models.ManyToManyField(Contact, blank=True, verbose_name="Employee(s)")
 
     class Meta:

@@ -8,18 +8,6 @@ CURRENCY = [
 ]
 
 
-class IncomeManager(models.Manager):
-    def income_official_account(self):
-        return self.get_queryset().filter(to_bank_account__is_official=True)
-
-    def sum_income_official_account(self):
-        incomes = self.get_queryset().filter(to_bank_account__is_official=True)
-        list_of_income = []
-        for i in incomes:
-            list_of_income.append(int(i.price))
-        return sum(list_of_income)
-
-
 class SalaryManager(models.Manager):
     def salary(self):
         salary = self.get_queryset().filter(to__is_superuser=False)
@@ -33,7 +21,7 @@ class PayManager(models.Manager):
     def pay_employer_worker(self):
         users = User.objects.filter(is_superuser=False)
         pays = self.get_queryset().filter(source='employer', payer__is_superuser=False)
-        salaries = Salary.objects.filter()
+        salaries = Salary.objects.all()
         sals = []
         costs = []
         all_payments = []
@@ -57,12 +45,14 @@ class PayManager(models.Manager):
             costs = []
         return all_payments
 
-    # returns pays base on source and partner (superuser)
+    # returns pays base on employer source and partner (is_superuser)
     def pay_employer_partner(self):
         users = User.objects.filter(is_superuser=True)
         pays = self.get_queryset().filter(source='employer', payer__is_superuser=True)
+        funds = Fund.objects.all()
         costs = []
         all_payments = []
+        user_funds = []
         for user in users:
             for pay in pays:
                 if user.id == pay.payer.id:
@@ -72,9 +62,27 @@ class PayManager(models.Manager):
                     'costs': costs,
                     'sum': sum(costs)
                 }
+            for fund in funds:
+                if user.id == fund.user.id:
+                    user_funds.append(int(fund.price))
+                    payments['funds'] = user_funds
+                    payments['funds_sum'] = sum(user_funds)
             all_payments.append(payments)
             costs = []
+            user_funds = []
         return all_payments
+
+
+class IncomeManager(models.Manager):
+    def income_official_account(self):
+        return self.get_queryset().filter(to_bank_account__is_official=True)
+
+    def sum_income_official_account(self):
+        incomes = self.get_queryset().filter(to_bank_account__is_official=True)
+        list_of_income = []
+        for i in incomes:
+            list_of_income.append(int(i.price))
+        return sum(list_of_income)
 
 
 class OfficialInvoices(models.Model):
@@ -162,6 +170,14 @@ class Income(models.Model):
         return self.title
 
 
+class Fund(models.Model):
+    user = models.ForeignKey(User, null=False, blank=False, on_delete=models.CASCADE, default=False)
+    price = models.CharField(max_length=32, null=False, blank=False)
+    price_currency = models.CharField(max_length=32, choices=CURRENCY, null=False, blank=True, default=CURRENCY[0])
+    to_bank_account = models.ForeignKey(BankAccount, null=False, blank=False, on_delete=models.CASCADE, )
+    comment = models.TextField(null=True, blank=True)
+
+
 class Pay(models.Model):
     INVOICE = [
         ('no_invoice', 'No Invoice'),
@@ -200,3 +216,9 @@ class Pay(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Sell(models.Model):
+    # todo: you can connect to the incomes
+    to_user = models.ForeignKey(Contact, null=True, blank=True, on_delete=models.CASCADE)
+    to_company = models.ForeignKey(Company, null=True, blank=True, on_delete=models.CASCADE)
