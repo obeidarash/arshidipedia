@@ -3,9 +3,13 @@ from django_countries.fields import CountryField
 from django.core.validators import EmailValidator, URLValidator
 
 
-class Email(models.Model):
-    title = models.CharField(max_length=256, null=False, blank=False)
-    email = models.EmailField(null=False, blank=False, unique=True, validators=(EmailValidator,))
+class Hashtag(models.Model):
+    name = models.CharField(max_length=64, null=False, blank=False, unique=True)
+    slug = models.SlugField(max_length=128, null=False, blank=False, unique=True,
+                            help_text='This Field Should be English')
+
+    def __str__(self):
+        return self.name
 
 
 class Address(models.Model):
@@ -26,11 +30,15 @@ class Contact(models.Model):
     lastname_en = models.CharField(max_length=64, null=True, blank=True)
     gender = models.CharField(max_length=16, choices=GENDER, null=False, blank=False)
     position = models.CharField(max_length=64, null=True, blank=True)
+    birthday = models.DateField(null=True, blank=True)
+    email = models.EmailField(null=True, blank=True, help_text="Seperate emails with comma",
+                              validators=(EmailValidator,))
     telephone = models.CharField(max_length=32, null=True, blank=True)
     mobile_1 = models.CharField(max_length=32, null=True, blank=True)
     mobile_2 = models.CharField(max_length=32, null=True, blank=True)
     website = models.URLField(max_length=512, null=True, blank=True, validators=[URLValidator, ])
     national_code = models.CharField(max_length=32, null=True, blank=True)
+    hashtag = models.ManyToManyField(Hashtag, null=True, blank=True)
     comment = models.TextField(max_length=2048, null=True, blank=True)
 
     # todo: add email in here
@@ -51,8 +59,10 @@ class Company(models.Model):
     national_id = models.CharField(max_length=16, null=True, blank=True)
     workshop_code = models.CharField(max_length=16, null=True, blank=True)
     registration_number = models.CharField(max_length=16, null=True, blank=True)
-    email = models.EmailField(null=True, blank=True)
+    email = models.EmailField(null=True, blank=True, help_text="Seperate emails with comma",
+                              validators=(EmailValidator,))
     contact = models.ManyToManyField(Contact, blank=True, verbose_name="Employee(s)")
+    hashtag = models.ManyToManyField(Hashtag, null=True, blank=True)
 
     class Meta:
         verbose_name = 'Company'
