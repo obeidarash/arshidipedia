@@ -25,7 +25,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'contacts',
     'accounting',
+    'sell',
+    'office',
     'jalali_date',
+    'tinymce',
     # 'arshidipedia.models'
     # 'humanize'
 ]

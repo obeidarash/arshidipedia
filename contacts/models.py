@@ -13,7 +13,12 @@ class Hashtag(models.Model):
 
 
 class Address(models.Model):
+    ADDRESS = [('private', 'Private Address'),
+               ('invoice', 'Invoice Address'),
+               ('delivery ', 'Delivery Address'),
+               ('other', 'Other Address')]
     title = models.CharField(max_length=256, null=False, blank=False)
+    type = models.CharField(max_length=128, choices=ADDRESS, null=False, blank=True, default=('delivery ', 'Delivery Address'))
     country = CountryField(blank_label='select country', null=True, blank=True)
     city = models.CharField(max_length=64, null=True, blank=True)
     province = models.CharField(max_length=64, null=True, blank=True)
@@ -38,7 +43,7 @@ class Contact(models.Model):
     mobile_2 = models.CharField(max_length=32, null=True, blank=True)
     website = models.URLField(max_length=512, null=True, blank=True, validators=[URLValidator, ])
     national_code = models.CharField(max_length=32, null=True, blank=True)
-    hashtag = models.ManyToManyField(Hashtag, null=True, blank=True)
+    hashtag = models.ManyToManyField(Hashtag)
     comment = models.TextField(max_length=2048, null=True, blank=True)
 
     # todo: add email in here
@@ -62,7 +67,7 @@ class Company(models.Model):
     email = models.EmailField(null=True, blank=True, help_text="Seperate emails with comma",
                               validators=(EmailValidator,))
     contact = models.ManyToManyField(Contact, blank=True, verbose_name="Employee(s)")
-    hashtag = models.ManyToManyField(Hashtag, null=True, blank=True)
+    hashtag = models.ManyToManyField(Hashtag)
 
     class Meta:
         verbose_name = 'Company'
