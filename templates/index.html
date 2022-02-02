@@ -1,11 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Arshdipedia</title>
-</head>
-<body>
-<div>
+{% extends 'base.html' %}
+{% block content %}
     {{ test }}
     <a href="/admin">Admin</a>
     <h3>Costs base on user pocket when is superuser (Sharik)</h3>
@@ -44,6 +38,5 @@
     {% endfor %}
     <h3>sum of incomes base on official account</h3>
     {{ sum_of_official_incomes }}
-</div>
-</body>
-</html>
+
+{% endblock %}
