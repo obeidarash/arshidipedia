@@ -4,47 +4,57 @@ from django.core.validators import EmailValidator, URLValidator
 
 
 class Hashtag(models.Model):
-    name = models.CharField(max_length=64, null=False, blank=False, unique=True)
+    name = models.CharField(max_length=64, null=False, blank=False, unique=True, verbose_name="نام برچسب")
     slug = models.SlugField(max_length=128, null=False, blank=False, unique=True,
-                            help_text='This Field Should be English')
+                            help_text='به انگلیسی باشد، به جای اسپیس از خط تیره استفاده کنید، هر چه کوتاه تر بهتر و با نام برچسب مرتبط باشد',
+                            verbose_name="اسلاگ")
 
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = 'برچسب'
+        verbose_name_plural = "برچسب ها"
+
 
 class Address(models.Model):
-    ADDRESS = [('private', 'Private Address'),
-               ('invoice', 'Invoice Address'),
-               ('delivery ', 'Delivery Address'),
-               ('other', 'Other Address')]
-    title = models.CharField(max_length=256, null=False, blank=False)
-    type = models.CharField(max_length=128, choices=ADDRESS, null=False, blank=True, default=('delivery ', 'Delivery Address'))
-    country = CountryField(blank_label='select country', null=True, blank=True)
-    city = models.CharField(max_length=64, null=True, blank=True)
-    province = models.CharField(max_length=64, null=True, blank=True)
-    address = models.CharField(max_length=512, null=True, blank=True)
-    plate = models.IntegerField(null=True, blank=True)
-    zipcode = models.CharField(max_length=32, null=True, blank=True)
+    ADDRESS = [('private', 'آدرس خصوصی یا شخصی'),
+               ('invoice', 'آدرس فاکتور'),
+               ('delivery ', 'آدرس ارسال یا دریافت'),
+               ('other', 'دیگر آدرس ها ')]
+    title = models.CharField(max_length=256, null=False, blank=False, verbose_name="نام آدرس")
+    type = models.CharField(max_length=128, choices=ADDRESS, null=False, blank=True,
+                            default=('delivery ', 'Delivery Address'), verbose_name="نوع آدرس")
+    country = CountryField(blank_label='select country', null=True, blank=True, verbose_name="کشور")
+    city = models.CharField(max_length=64, null=True, blank=True, verbose_name="شهر")
+    province = models.CharField(max_length=64, null=True, blank=True, verbose_name="شهرستان")
+    address = models.CharField(max_length=512, null=True, blank=True, verbose_name="آدرس")
+    plate = models.IntegerField(null=True, blank=True, verbose_name="پلاک")
+    zipcode = models.CharField(max_length=32, null=True, blank=True, verbose_name="کد پستی")
+
+    class Meta:
+        verbose_name = 'آدرس'
+        verbose_name_plural = "آدرس ها"
 
 
 class Contact(models.Model):
-    GENDER = (('mr', 'Mr'), ('ms', 'Ms'))
-    name_fa = models.CharField(max_length=64, null=True, blank=True)
-    lastname_fa = models.CharField(max_length=64, null=False, blank=False)
-    name_en = models.CharField(max_length=64, null=True, blank=True)
-    lastname_en = models.CharField(max_length=64, null=True, blank=True)
-    gender = models.CharField(max_length=16, choices=GENDER, null=False, blank=False)
-    position = models.CharField(max_length=64, null=True, blank=True)
-    birthday = models.DateField(null=True, blank=True)
-    email = models.EmailField(null=True, blank=True, help_text="Seperate emails with comma",
-                              validators=(EmailValidator,))
-    telephone = models.CharField(max_length=32, null=True, blank=True)
-    mobile_1 = models.CharField(max_length=32, null=True, blank=True)
-    mobile_2 = models.CharField(max_length=32, null=True, blank=True)
-    website = models.URLField(max_length=512, null=True, blank=True, validators=[URLValidator, ])
-    national_code = models.CharField(max_length=32, null=True, blank=True)
-    hashtag = models.ManyToManyField(Hashtag)
-    comment = models.TextField(max_length=2048, null=True, blank=True)
+    GENDER = (('mr', 'آقا'), ('ms', 'خانم'))
+    name_fa = models.CharField(max_length=64, null=True, blank=True, verbose_name="نام به فارسی")
+    lastname_fa = models.CharField(max_length=64, null=False, blank=False, verbose_name="نام خانوادگی به انگلیسی")
+    name_en = models.CharField(max_length=64, null=True, blank=True, verbose_name="نام به انگلیسی")
+    lastname_en = models.CharField(max_length=64, null=True, blank=True, verbose_name="نام خانوادگی به انگلیسی")
+    gender = models.CharField(max_length=16, choices=GENDER, null=False, blank=False, verbose_name="جنسیت")
+    position = models.CharField(max_length=64, null=True, blank=True, verbose_name="سمت")
+    birthday = models.DateField(null=True, blank=True, verbose_name="تاریخ تولد")
+    email = models.EmailField(null=True, blank=True, help_text="ایمیل ها را با کاما جدا کنید",
+                              validators=(EmailValidator,), verbose_name="ایمیل (ها)")
+    telephone = models.CharField(max_length=32, null=True, blank=True, verbose_name="تلفن")
+    mobile_1 = models.CharField(max_length=32, null=True, blank=True, verbose_name="موبایل 1")
+    mobile_2 = models.CharField(max_length=32, null=True, blank=True, verbose_name="موبایل 2")
+    website = models.URLField(max_length=512, null=True, blank=True, validators=[URLValidator, ], verbose_name="وب سایت")
+    national_code = models.CharField(max_length=32, null=True, blank=True, verbose_name="کد ملی")
+    hashtag = models.ManyToManyField(Hashtag, verbose_name="برچسب")
+    comment = models.TextField(max_length=2048, null=True, blank=True, verbose_name="توضیحات")
 
     # todo: add email in here
     # todo: add validator to the tables
@@ -54,24 +64,28 @@ class Contact(models.Model):
             return self.name_fa + " " + self.lastname_fa
         return self.lastname_fa
 
+    class Meta:
+        verbose_name = 'مخاطب'
+        verbose_name_plural = "مخاطب ها"
+
 
 class Company(models.Model):
-    name_fa = models.CharField(max_length=128, null=True, blank=True)
-    name_en = models.CharField(max_length=128, null=True, blank=True)
-    website = models.URLField(max_length=512, null=True, blank=True, validators=[URLValidator, ])
-    telephone = models.CharField(max_length=32, null=True, blank=True)
-    economic_code = models.CharField(max_length=16, null=True, blank=True)
-    national_id = models.CharField(max_length=16, null=True, blank=True)
-    workshop_code = models.CharField(max_length=16, null=True, blank=True)
-    registration_number = models.CharField(max_length=16, null=True, blank=True)
-    email = models.EmailField(null=True, blank=True, help_text="Seperate emails with comma",
-                              validators=(EmailValidator,))
-    contact = models.ManyToManyField(Contact, blank=True, verbose_name="Employee(s)")
-    hashtag = models.ManyToManyField(Hashtag)
+    name_fa = models.CharField(max_length=128, null=True, blank=True, verbose_name="نام شرکت به فارسی")
+    name_en = models.CharField(max_length=128, null=True, blank=True, verbose_name="نام شرکت به انگلیسی")
+    website = models.URLField(max_length=512, null=True, blank=True, validators=[URLValidator, ], verbose_name="وب سایت")
+    telephone = models.CharField(max_length=32, null=True, blank=True, verbose_name="تلفن")
+    economic_code = models.CharField(max_length=16, null=True, blank=True, verbose_name="شماره اقتصادی")
+    national_id = models.CharField(max_length=16, null=True, blank=True, verbose_name="شناسه ملی")
+    workshop_code = models.CharField(max_length=16, null=True, blank=True, verbose_name="کد کارگاه")
+    registration_number = models.CharField(max_length=16, null=True, blank=True, verbose_name="شماره ثبت")
+    email = models.EmailField(null=True, blank=True, help_text="ایمیل ها را با کاما از هم جدا کنید",
+                              validators=(EmailValidator,), verbose_name="ایمیل (ها)")
+    contact = models.ManyToManyField(Contact, blank=True, verbose_name="کارمند (ها)")
+    hashtag = models.ManyToManyField(Hashtag, verbose_name="برچسب")
 
     class Meta:
-        verbose_name = 'Company'
-        verbose_name_plural = "Companies"
+        verbose_name = 'شرکت'
+        verbose_name_plural = "شرکت ها"
 
     def __str__(self):
         if self.name_fa and self.name_en:

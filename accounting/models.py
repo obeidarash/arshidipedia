@@ -90,126 +90,161 @@ class IncomeManager(models.Manager):
 
 class OfficialInvoices(models.Model):
     LOCATION = [
-        ('company_office', 'Company Office'),
-        ('employer_office', 'Employer Office'),
+        ('company_office', 'شرکت'),
+        ('employer_office', 'شرکت کارفرما'),
     ]
     STATUS = [
-        ('current', 'Current'),
-        ('invalid', 'Invalid'),
-        ('lost', 'Lost'),
+        ('current', 'جاری'),
+        ('invalid', 'باطل'),
+        ('lost', 'گمشده'),
     ]
     # todo: employer (fetch form contact and companye : can you fetch both of them in one model?)
-    contact = models.ForeignKey(Contact, null=True, blank=True, on_delete=models.CASCADE)
-    company = models.ForeignKey(Company, null=True, blank=True, on_delete=models.CASCADE)
+    contact = models.ForeignKey(Contact, null=True, blank=True, on_delete=models.CASCADE, verbose_name="شخص")
+    company = models.ForeignKey(Company, null=True, blank=True, on_delete=models.CASCADE, verbose_name="شرکت")
     # todo: convert date of invoice to shamsi
-    title = models.CharField(max_length=64, null=False, blank=False, unique=True)
+    title = models.CharField(max_length=64, null=False, blank=False, unique=True, verbose_name="موضوع فاکتور")
     location = models.CharField(max_length=64, choices=LOCATION, null=False, blank=False,
-                                default=(('company_office'), ('Company Office')))
+                                default=(('company_office'), ('Company Office')), verbose_name="مکان فاکتور")
     status = models.CharField(max_length=64, choices=STATUS, null=False, blank=False,
-                              default=(('current'), ('Current')))
+                              default=(('current'), ('Current')), verbose_name="وضعیت فاکتور")
     # This can be integer Field
-    serial_number = models.CharField(max_length=32, null=False, blank=False)
-    date_of_invoice = models.DateField(null=False, blank=False)
-    employer_signature = models.BooleanField(null=False, blank=False, default=False)
-    comment = models.TextField(null=True, blank=True)
+    serial_number = models.CharField(max_length=32, null=False, blank=False, verbose_name="شماره سریال فاکتور")
+    date_of_invoice = models.DateField(null=False, blank=False, verbose_name="تاریخ فاکتور")
+    employer_signature = models.BooleanField(null=False, blank=False, default=False, verbose_name="امضای کارفرما دارد؟")
+    comment = models.TextField(null=True, blank=True, verbose_name="توضیحات")
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'فاکتور رسمی'
+        verbose_name_plural = "فاکتور ها رسمی"
 
     def __str__(self):
         return self.title
 
 
 class Category(models.Model):
-    title = models.CharField(max_length=64, null=False, blank=False, unique=True)
-    slug = models.SlugField(max_length=128, null=False, blank=False, unique=True)
+    title = models.CharField(max_length=64, null=False, blank=False, unique=True, verbose_name="دسته بندی")
+    slug = models.SlugField(max_length=128, null=False, blank=False, unique=True,
+                            help_text='به انگلیسی باشد، هر چه کوتاه تر بهتر، به جای اسپیس از خط تیره استفاده کنید',
+                            verbose_name="اسلاگ")
 
     class Meta:
-        verbose_name = 'Category'
-        verbose_name_plural = "Categories"
+        verbose_name = 'دسته بندی'
+        verbose_name_plural = "دسته بندی ها"
 
     def __str__(self):
         return self.title
 
 
 class BankAccount(models.Model):
-    title = models.CharField(max_length=256, null=False, blank=False)
-    bank = models.CharField(max_length=256, null=False, blank=False)
-    card_number = models.CharField(max_length=256, null=False, blank=False, unique=True)
-    account_number = models.CharField(max_length=256, null=False, blank=False, unique=True)
-    shaba = models.CharField(max_length=256, null=False, blank=False, unique=True)
-    is_official = models.BooleanField(default=False)
-    comment = models.TextField(null=True, blank=True)
+    title = models.CharField(max_length=256, null=False, blank=False, verbose_name="توضیح")
+    bank = models.CharField(max_length=256, null=False, blank=False, verbose_name="نام بانک")
+    card_number = models.CharField(max_length=256, null=False, blank=False, unique=True, verbose_name="شماره کارت")
+    account_number = models.CharField(max_length=256, null=False, blank=False, unique=True, verbose_name="شماره حساب")
+    shaba = models.CharField(max_length=256, null=False, blank=False, unique=True, verbose_name="شبا")
+    is_official = models.BooleanField(default=False, verbose_name="حساب رسمی است؟")
+    comment = models.TextField(null=True, blank=True, verbose_name="توضیحات")
 
     def __str__(self):
         return self.title
 
+    class Meta:
+        verbose_name = 'حساب بانکی'
+        verbose_name_plural = "حساب های بانکی"
+
 
 class Salary(models.Model):
-    to = models.ForeignKey(User, null=False, blank=False, on_delete=models.CASCADE, default=False)
-    price = models.CharField(max_length=32, null=False, blank=False)
-    price_currency = models.CharField(max_length=32, choices=CURRENCY, null=False, blank=True, default=CURRENCY[0])
-    bank_account = models.ForeignKey(BankAccount, null=False, blank=False, on_delete=models.CASCADE, )
-    date_of_payment = models.DateField(null=False, blank=False)
-    comment = models.TextField(null=True, blank=True)
+    to = models.ForeignKey(User, null=False, blank=False, on_delete=models.CASCADE, default=False,
+                           verbose_name="به حساب کارمند")
+    price = models.CharField(max_length=32, null=False, blank=False, verbose_name="مبلغ")
+    price_currency = models.CharField(max_length=32, choices=CURRENCY, null=False, blank=True, default=CURRENCY[0],
+                                      verbose_name="واحد پول مبلغ")
+    bank_account = models.ForeignKey(BankAccount, null=False, blank=False, on_delete=models.CASCADE,
+                                     verbose_name="از حساب بانکی")
+    date_of_payment = models.DateField(null=False, blank=False, verbose_name="تاریخ پرداخت")
+    comment = models.TextField(null=True, blank=True, verbose_name="توضیحات")
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     objects = SalaryManager()
 
     class Meta:
-        verbose_name_plural = "Salaries"
+        verbose_name = 'تنخواه'
+        verbose_name_plural = "تنخواه ها"
 
 
 class Income(models.Model):
-    title = models.CharField(max_length=256, null=False, blank=False)
-    price = models.CharField(max_length=32, null=False, blank=False)
-    price_currency = models.CharField(max_length=32, choices=CURRENCY, null=False, blank=True, default=CURRENCY[0])
-    to_bank_account = models.ForeignKey(BankAccount, null=False, blank=False, on_delete=models.CASCADE, )
-    from_contact = models.ForeignKey(Contact, null=True, blank=True, on_delete=models.CASCADE)
-    from_company = models.ForeignKey(Company, null=True, blank=True, on_delete=models.CASCADE)
-    comment = models.TextField(null=True, blank=True)
+    title = models.CharField(max_length=256, null=False, blank=False, verbose_name="موضوع")
+    price = models.CharField(max_length=32, null=False, blank=False, verbose_name="مبلغ")
+    price_currency = models.CharField(max_length=32, choices=CURRENCY, null=False, blank=True, default=CURRENCY[0],
+                                      verbose_name="واحد پول دریافتی")
+    to_bank_account = models.ForeignKey(BankAccount, null=False, blank=False, on_delete=models.CASCADE,
+                                        verbose_name="به حساب بانکی")
+    from_contact = models.ForeignKey(Contact, null=True, blank=True, on_delete=models.CASCADE, verbose_name="شخص")
+    from_company = models.ForeignKey(Company, null=True, blank=True, on_delete=models.CASCADE, verbose_name="شرکت")
+    comment = models.TextField(null=True, blank=True, verbose_name="توضیحات")
     objects = IncomeManager()
 
     def __str__(self):
         return self.title
 
+    class Meta:
+        verbose_name = 'دریافت'
+        verbose_name_plural = "دریافتی ها"
+
 
 class Fund(models.Model):
-    user = models.ForeignKey(User, null=False, blank=False, on_delete=models.CASCADE, default=False)
-    price = models.CharField(max_length=32, null=False, blank=False)
-    price_currency = models.CharField(max_length=32, choices=CURRENCY, null=False, blank=True, default=CURRENCY[0])
-    to_bank_account = models.ForeignKey(BankAccount, null=False, blank=False, on_delete=models.CASCADE, )
-    comment = models.TextField(null=True, blank=True)
+    user = models.ForeignKey(User, null=False, blank=False, on_delete=models.CASCADE, default=False,
+                             help_text="کارمندی را انتخاب کنید که در شرکت شریک است",
+                             verbose_name="شریک")
+    price = models.CharField(max_length=32, null=False, blank=False, verbose_name="هزینه")
+    price_currency = models.CharField(max_length=32, choices=CURRENCY, null=False, blank=True, default=CURRENCY[0],
+                                      verbose_name="واحد پول هزینه")
+    to_bank_account = models.ForeignKey(BankAccount, null=False, blank=False, on_delete=models.CASCADE,
+                                        verbose_name="به حساب بانکی")
+    comment = models.TextField(null=True, blank=True, verbose_name="توضیحات")
+
+    class Meta:
+        verbose_name = 'سرمایه'
+        verbose_name_plural = "سرمایه ها"
 
 
 class Pay(models.Model):
     INVOICE = [
-        ('no_invoice', 'No Invoice'),
-        ('invoice', 'Invoice'),
-        ('official_invoice', 'Official Invoice'),
+        ('no_invoice', 'بدون فاکتور'),
+        ('invoice', 'فاکتور دارد'),
+        ('official_invoice', 'فاکتور رسمی'),
     ]
     SOURCE = [
-        ('employer', 'Employer'),
-        ('company', 'Company')
+        ('employer', 'کارمند'),
+        ('company', 'شرکت')
     ]
-    title = models.CharField(max_length=256, null=False, blank=False)
-    price = models.IntegerField(null=False, blank=False)
-    price_currency = models.CharField(max_length=32, choices=CURRENCY, null=False, blank=True, default=CURRENCY[0])
-    fee = models.CharField(max_length=32, null=True, blank=True)
-    fe_currency = models.CharField(max_length=32, choices=CURRENCY, null=False, blank=True, default=CURRENCY[0])
-    taxation = models.CharField(max_length=32, null=True, blank=True)
-    taxation_currency = models.CharField(max_length=32, choices=CURRENCY, null=False, blank=True, default=CURRENCY[0])
-    to = models.CharField(max_length=256, null=True, blank=False, help_text='Like Seven Host or Korosh Walmart')
-    payer = models.ForeignKey(User, null=False, blank=False, on_delete=models.CASCADE, default=False)
+    title = models.CharField(max_length=256, null=False, blank=False, verbose_name="موضوع")
+    price = models.IntegerField(null=False, blank=False, verbose_name="مقدار هزینه")
+    price_currency = models.CharField(max_length=32, choices=CURRENCY, null=False, blank=True, default=CURRENCY[0],
+                                      verbose_name="واحد پول")
+    fee = models.CharField(max_length=32, null=True, blank=True, verbose_name="کارمزد")
+    fe_currency = models.CharField(max_length=32, choices=CURRENCY, null=False, blank=True, default=CURRENCY[0],
+                                   verbose_name="واحد پول کارمزد")
+    taxation = models.CharField(max_length=32, null=True, blank=True, verbose_name="مالیات")
+    taxation_currency = models.CharField(max_length=32, choices=CURRENCY, null=False, blank=True, default=CURRENCY[0],
+                                         verbose_name="واحد پول مالیات")
+    to = models.CharField(max_length=256, null=True, blank=False, help_text='Like Seven Host or Korosh Walmart',
+                          verbose_name="به حساب")
+    payer = models.ForeignKey(User, null=False, blank=False, on_delete=models.CASCADE, default=False,
+                              verbose_name="پرداخت کننده")
     # todo: study about on_delete
     source = models.CharField(max_length=32, choices=SOURCE, null=False, blank=False, default=SOURCE[0],
-                              help_text='it means you spend money form your pocket or the company')
-    account = models.ForeignKey(BankAccount, null=True, blank=True, on_delete=models.CASCADE, default=False)
-    date_of_payment = models.DateField(null=False, blank=False)
+                              help_text='it means you spend money form your pocket or the company',
+                              verbose_name="منبع پرداخت")
+    account = models.ForeignKey(BankAccount, null=True, blank=True, on_delete=models.CASCADE, default=False,
+                                verbose_name="حساب بانکی")
+    date_of_payment = models.DateField(null=False, blank=False, verbose_name="تاریخ پرداخت")
     invoice = models.CharField(max_length=64, choices=INVOICE, null=False, blank=False,
-                               default=(('no_invoice'), ('No Invoice')))
-    category = models.ForeignKey(Category, null=False, blank=False, on_delete=models.CASCADE)
-    attach = models.FileField(upload_to='pay', blank=True, null=True)
-    comment = models.TextField(max_length=2048, null=True, blank=True)
+                               default=(('no_invoice'), ('No Invoice')), verbose_name="وضعیت فاکتور")
+    category = models.ForeignKey(Category, null=False, blank=False, on_delete=models.CASCADE, verbose_name="دسته بندی")
+    attach = models.FileField(upload_to='pay', blank=True, null=True, verbose_name="پیوست")
+    comment = models.TextField(max_length=2048, null=True, blank=True, verbose_name="توضیحات")
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     objects = PayManager()
@@ -220,3 +255,7 @@ class Pay(models.Model):
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        verbose_name = 'پرداخت'
+        verbose_name_plural = "پرداخت ها"
