@@ -1,6 +1,9 @@
+import os
 from django.db import models
 from django.contrib.auth.models import User
 from contacts.models import Contact, Company
+from django.dispatch import receiver
+import uuid
 
 CURRENCY = [
     ('IRR', 'Rial'),
@@ -18,32 +21,32 @@ class PayManager(models.Manager):
     # returns pays base on employer and user is worker (not supersuer)
     # returns salaries of worker user
     # it will calculate the salaries of the worker
-    def pay_employer_worker(self):
-        users = User.objects.filter(is_superuser=False)
-        pays = self.get_queryset().filter(source='employer', payer__is_superuser=False)
-        salaries = Salary.objects.all()
-        sals = []
-        costs = []
-        all_payments = []
-        for user in users:
-            for pay in pays:
-                if user.id == pay.payer.id:
-                    costs.append(int(pay.price))
-                payments = {
-                    'user': user.username,
-                    'costs': costs,
-                    'sum': sum(costs)
-                }
-            for salary in salaries:
-                if user.id == salary.to.id:
-                    sals.append(int(salary.price))
-                payments['salaries'] = sals
-                payments['salaries_sum'] = sum(sals)
-                payments['calculate_salary'] = sum(sals) - sum(costs)
-            all_payments.append(payments)
-            sals = []
-            costs = []
-        return all_payments
+    # def pay_employer_worker(self):
+    #     users = User.objects.filter(is_superuser=False)
+    #     pays = self.get_queryset().filter(source='employer', payer__is_superuser=False)
+    #     salaries = Salary.objects.all()
+    #     sals = []
+    #     costs = []
+    #     all_payments = []
+    #     for user in users:
+    #         for pay in pays:
+    #             if user.id == pay.payer.id:
+    #                 costs.append(int(pay.price))
+    #             payments = {
+    #                 'user': user.username,
+    #                 'costs': costs,
+    #                 'sum': sum(costs)
+    #             }
+    #         for salary in salaries:
+    #             if user.id == salary.to.id:
+    #                 sals.append(int(salary.price))
+    #             payments['salaries'] = sals
+    #             payments['salaries_sum'] = sum(sals)
+    #             payments['calculate_salary'] = sum(sals) - sum(costs)
+    #         all_payments.append(payments)
+    #         sals = []
+    #         costs = []
+    #     return all_payments
 
     # returns pays base on employer source and partner (is_superuser)
     def pay_employer_partner(self):
@@ -205,6 +208,7 @@ class Pay(models.Model):
     invoice = models.CharField(max_length=64, choices=INVOICE, null=False, blank=False,
                                default=(('no_invoice'), ('No Invoice')))
     category = models.ForeignKey(Category, null=False, blank=False, on_delete=models.CASCADE)
+    attach = models.FileField(upload_to='pay', blank=True, null=True)
     comment = models.TextField(max_length=2048, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)

@@ -17,19 +17,19 @@
     <hr>
     {{ pay_employer_worker }}
     <h3>Costs base on user pocket when is worker </h3>
-    {% for pay in pay_employer_worker %}
-        <ul style="font-weight: bold">{{ pay.user|title }}</ul>
-        <ul style="font-weight: bold">Sum of Costs: {{ pay.sum|title }}</ul>
-        {% for cost in pay.costs %}
-            <li>{{ cost }}</li>
-        {% endfor %}
-        <br>
-        <h3>Salaries based on worker user</h3>
-        <ul style="font-weight: bold">Sum of Salaries: {{ pay.salaries_sum|title }}</ul>
-        {% for salary in pay.salaries %}
-            <li>{{ salary }}</li>
-        {% endfor %}
-    {% endfor %}
+{#    {% for pay in pay_employer_worker %}#}
+{#        <ul style="font-weight: bold">{{ pay.user|title }}</ul>#}
+{#        <ul style="font-weight: bold">Sum of Costs: {{ pay.sum|title }}</ul>#}
+{#        {% for cost in pay.costs %}#}
+{#            <li>{{ cost }}</li>#}
+{#        {% endfor %}#}
+{#        <br>#}
+{#        <h3>Salaries based on worker user</h3>#}
+{#        <ul style="font-weight: bold">Sum of Salaries: {{ pay.salaries_sum|title }}</ul>#}
+{#        {% for salary in pay.salaries %}#}
+{#            <li>{{ salary }}</li>#}
+{#        {% endfor %}#}
+{#    {% endfor %}#}
     <hr>
     <h3>incomes base on official account</h3>
     {% for income in official_incomes %}
