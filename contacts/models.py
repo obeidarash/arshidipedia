@@ -53,7 +53,7 @@ class Contact(models.Model):
     mobile_2 = models.CharField(max_length=32, null=True, blank=True, verbose_name="موبایل 2")
     website = models.URLField(max_length=512, null=True, blank=True, validators=[URLValidator, ], verbose_name="وب سایت")
     national_code = models.CharField(max_length=32, null=True, blank=True, verbose_name="کد ملی")
-    hashtag = models.ManyToManyField(Hashtag, verbose_name="برچسب")
+    hashtag = models.ManyToManyField(Hashtag, verbose_name="برچسب", blank=True, null=True)
     comment = models.TextField(max_length=2048, null=True, blank=True, verbose_name="توضیحات")
 
     # todo: add email in here
@@ -81,7 +81,7 @@ class Company(models.Model):
     email = models.EmailField(null=True, blank=True, help_text="ایمیل ها را با کاما از هم جدا کنید",
                               validators=(EmailValidator,), verbose_name="ایمیل (ها)")
     contact = models.ManyToManyField(Contact, blank=True, verbose_name="کارمند (ها)")
-    hashtag = models.ManyToManyField(Hashtag, verbose_name="برچسب")
+    hashtag = models.ManyToManyField(Hashtag, verbose_name="برچسب", blank=True, null=True)
 
     class Meta:
         verbose_name = 'شرکت'
