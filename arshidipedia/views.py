@@ -1,7 +1,19 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from accounting.models import Salary, Pay, Income
+from contacts.models import Contact, Company
 from django.contrib.auth.models import User, Group
+
+
+@login_required(login_url='/admin')
+def new_home(request):
+    companies = Company.objects.all()
+    for company in companies:
+        print(company.contact)
+    context = {
+        'companies': companies
+    }
+    return render(request, 'index.html', context)
 
 
 @login_required(login_url='/admin')

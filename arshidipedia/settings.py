@@ -28,10 +28,7 @@ INSTALLED_APPS = [
     'accounting',
     'sell',
     'office',
-    'jalali_date',
     'tinymce',
-    # 'arshidipedia.models'
-    # 'humanize'
 ]
 
 MIDDLEWARE = [

@@ -117,7 +117,7 @@ class OfficialInvoices(models.Model):
 
     class Meta:
         verbose_name = 'فاکتور رسمی'
-        verbose_name_plural = "فاکتور ها رسمی"
+        verbose_name_plural = "فاکتور های رسمی"
 
     def __str__(self):
         return self.title
@@ -131,7 +131,7 @@ class Category(models.Model):
 
     class Meta:
         verbose_name = 'دسته بندی'
-        verbose_name_plural = "دسته بندی ها"
+        verbose_name_plural = "دسته بندی"
 
     def __str__(self):
         return self.title
@@ -190,7 +190,7 @@ class Income(models.Model):
 
     class Meta:
         verbose_name = 'دریافت'
-        verbose_name_plural = "دریافتی ها"
+        verbose_name_plural = "دریافتی"
 
 
 class Fund(models.Model):
@@ -206,7 +206,7 @@ class Fund(models.Model):
 
     class Meta:
         verbose_name = 'سرمایه'
-        verbose_name_plural = "سرمایه ها"
+        verbose_name_plural = "سرمایه"
 
 
 class Pay(models.Model):
@@ -258,4 +258,4 @@ class Pay(models.Model):
 
     class Meta:
         verbose_name = 'پرداخت'
-        verbose_name_plural = "پرداخت ها"
+        verbose_name_plural = "پرداخت"
