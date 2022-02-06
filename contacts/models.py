@@ -14,7 +14,7 @@ class Hashtag(models.Model):
 
     class Meta:
         verbose_name = 'برچسب'
-        verbose_name_plural = "برچسب ها"
+        verbose_name_plural = "برچسب"
 
 
 class Address(models.Model):
@@ -34,7 +34,7 @@ class Address(models.Model):
 
     class Meta:
         verbose_name = 'آدرس'
-        verbose_name_plural = "آدرس ها"
+        verbose_name_plural = "آدرس"
 
 
 class Contact(models.Model):
@@ -51,9 +51,10 @@ class Contact(models.Model):
     telephone = models.CharField(max_length=32, null=True, blank=True, verbose_name="تلفن")
     mobile_1 = models.CharField(max_length=32, null=True, blank=True, verbose_name="موبایل 1")
     mobile_2 = models.CharField(max_length=32, null=True, blank=True, verbose_name="موبایل 2")
-    website = models.URLField(max_length=512, null=True, blank=True, validators=[URLValidator, ], verbose_name="وب سایت")
+    website = models.URLField(max_length=512, null=True, blank=True, validators=[URLValidator, ],
+                              verbose_name="وب سایت")
     national_code = models.CharField(max_length=32, null=True, blank=True, verbose_name="کد ملی")
-    hashtag = models.ManyToManyField(Hashtag, verbose_name="برچسب", blank=True, null=True)
+    hashtag = models.ManyToManyField(Hashtag, verbose_name="برچسب")
     comment = models.TextField(max_length=2048, null=True, blank=True, verbose_name="توضیحات")
 
     # todo: add email in here
@@ -66,13 +67,14 @@ class Contact(models.Model):
 
     class Meta:
         verbose_name = 'مخاطب'
-        verbose_name_plural = "مخاطب ها"
+        verbose_name_plural = "مخاطب"
 
 
 class Company(models.Model):
     name_fa = models.CharField(max_length=128, null=True, blank=True, verbose_name="نام شرکت به فارسی")
     name_en = models.CharField(max_length=128, null=True, blank=True, verbose_name="نام شرکت به انگلیسی")
-    website = models.URLField(max_length=512, null=True, blank=True, validators=[URLValidator, ], verbose_name="وب سایت")
+    website = models.URLField(max_length=512, null=True, blank=True, validators=[URLValidator, ],
+                              verbose_name="وب سایت")
     telephone = models.CharField(max_length=32, null=True, blank=True, verbose_name="تلفن")
     economic_code = models.CharField(max_length=16, null=True, blank=True, verbose_name="شماره اقتصادی")
     national_id = models.CharField(max_length=16, null=True, blank=True, verbose_name="شناسه ملی")
@@ -81,11 +83,11 @@ class Company(models.Model):
     email = models.EmailField(null=True, blank=True, help_text="ایمیل ها را با کاما از هم جدا کنید",
                               validators=(EmailValidator,), verbose_name="ایمیل (ها)")
     contact = models.ManyToManyField(Contact, blank=True, verbose_name="کارمند (ها)")
-    hashtag = models.ManyToManyField(Hashtag, verbose_name="برچسب", blank=True, null=True)
+    hashtag = models.ManyToManyField(Hashtag, verbose_name="برچسب")
 
     class Meta:
         verbose_name = 'شرکت'
-        verbose_name_plural = "شرکت ها"
+        verbose_name_plural = "شرکت"
 
     def __str__(self):
         if self.name_fa and self.name_en:

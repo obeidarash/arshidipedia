@@ -15,7 +15,7 @@ class Hashtag(models.Model):
 
     class Meta:
         verbose_name = 'برچسب'
-        verbose_name_plural = "برچسب ها"
+        verbose_name_plural = "برچسب"
 
 
 class Letter(models.Model):
@@ -47,4 +47,4 @@ class Letter(models.Model):
 
     class Meta:
         verbose_name = 'نامه'
-        verbose_name_plural = "نامه ها"
+        verbose_name_plural = "نامه"
