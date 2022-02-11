@@ -43,7 +43,7 @@ class Letter(models.Model):
     type = models.CharField(max_length=32, choices=TYPE, null=True, blank=True, default=('physical', 'فیزیکی'),
                             verbose_name="نوع نامه")
     content = HTMLField(null=False, blank=False, verbose_name="متن نامه")
-    hashtag = models.ManyToManyField(Hashtag, verbose_name="برچسب")
+    hashtag = models.ManyToManyField(Hashtag, verbose_name="برچسب", blank=True)
 
     class Meta:
         verbose_name = 'نامه'

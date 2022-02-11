@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-from .views import home, new_home
+from .views import home, new_home, search
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -9,6 +9,7 @@ urlpatterns = [
     # path('', home),
     path('', new_home),
     path('tinymce/', include('tinymce.urls')),
+    path('search/', search, name='search'),
 ]
 
 admin.site.site_header = "Arshidipedia Admin"

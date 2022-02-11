@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from contacts.models import Contact, Company
 from django.dispatch import receiver
 import uuid
+from django_jalali.db import models as jmodels
+
 
 CURRENCY = [
     ('IRR', 'Rial'),
@@ -240,6 +242,7 @@ class Pay(models.Model):
     account = models.ForeignKey(BankAccount, null=True, blank=True, on_delete=models.CASCADE, default=False,
                                 verbose_name="حساب بانکی")
     date_of_payment = models.DateField(null=False, blank=False, verbose_name="تاریخ پرداخت")
+    # date_of_payment = jmodels.jDateField()
     invoice = models.CharField(max_length=64, choices=INVOICE, null=False, blank=False,
                                default=(('no_invoice'), ('No Invoice')), verbose_name="وضعیت فاکتور")
     category = models.ForeignKey(Category, null=False, blank=False, on_delete=models.CASCADE, verbose_name="دسته بندی")
@@ -248,6 +251,7 @@ class Pay(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     objects = PayManager()
+    # objects = jmodels.jManager()
 
     # todo: upload invoice
     # todo: add Shamsi date of payment

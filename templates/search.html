@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container">
+        <h1>تنایج جستجوی</h1>
+        <hr>
+        <div class="row">
+            <div class="col-4">
+                <h2>شرکت ها</h2>
+                {% if companies %}
+                    {% for company in companies %}
+                        <p><a href="#">{{ company.name_fa }}</a></p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="col-4">
+                <h2>مشتری</h2>
+                {% if contacts %}
+                    {% for contact in contacts %}
+                        <p><a href="#">{{ contact.name_fa }}</a></p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="col-4">
+                <h2>پرداخت</h2>
+                {% if pays %}
+                    {% for pay in pays %}
+                        <p><a href="#">{{ pay.title }}</a></p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

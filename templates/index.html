@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-3">
+                <h3>شرکت های اخیر</h3>
+                <hr>
+                {% for company in  companies %}
+                    <p><a href="#">{{ company.name_fa }} / {{ company.name_en }}</a></p>
+                {% endfor %}
+            </div>
+            <div class="col-3">
+                <h3>مشتری های اخیر</h3>
+                <hr>
+                {% for contact in  contacts %}
+                    <p><a href="#">{{ contact.name_fa }} {{ contact.lastname_fa }}</a></p>
+                {% endfor %}
+            </div>
+            <div class="col-3">
+                <h3>پرداخت ها</h3>
+                <hr>
+                {% for pay in  pays %}
+                    <p><a href="#">{{ pay.title }}</a></p>
+                {% endfor %}
+            </div>
+            <div class="col-3">
+                <h3>دریافتی</h3>
+                <hr>
+                {% for income in  incomes %}
+                    <p><a href="#">{{ income.title }} / {{ income.price }}</a></p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
