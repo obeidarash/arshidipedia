@@ -1,6 +1,9 @@
 from django.db import models
 from django_countries.fields import CountryField
 from django.core.validators import EmailValidator, URLValidator
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
+from django.core.exceptions import ValidationError
 
 
 class Hashtag(models.Model):
@@ -85,6 +88,10 @@ class Company(models.Model):
     contact = models.ManyToManyField(Contact, blank=True, verbose_name="کارمند (ها)")
     hashtag = models.ManyToManyField(Hashtag, verbose_name="برچسب")
 
+    def check_name(self):
+        if not self.name_fa and not self.name_en:
+            raise ValidationError({'name_fa': 'error'})
+
     class Meta:
         verbose_name = 'شرکت'
         verbose_name_plural = "شرکت"
@@ -97,3 +104,11 @@ class Company(models.Model):
         if self.name_en:
             return self.name_en
         return "No name!"
+
+
+# todo: fix the raise error
+# this is work but wont show the error in the correct way
+@receiver(pre_save, sender=Company)
+def check_name(sender, instance, **kwargs):
+    if not instance.name_fa and not instance.name_en:
+        raise ValidationError({'name_en': 'error'})
