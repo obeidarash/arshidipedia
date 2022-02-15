@@ -44,7 +44,7 @@ def search(request):
         query = request.GET.get('q')
         if query == '':
             query = None
-        pays = Pay.objects.filter(Q(title__icontains=query) | Q(price__exact=query))
+        pays = Pay.objects.filter(Q(title__icontains=query))
         companies = Company.objects.filter(Q(name_en__icontains=query) | Q(name_fa__icontains=query))
         contacts = Contact.objects.filter(Q(name_fa__icontains=query) | Q(name_en__icontains=query) |
                                           Q(lastname_en__icontains=query) | Q(lastname_fa__icontains=query))
