@@ -88,10 +88,6 @@ class Company(models.Model):
     contact = models.ManyToManyField(Contact, blank=True, verbose_name="کارمند (ها)")
     hashtag = models.ManyToManyField(Hashtag, verbose_name="برچسب")
 
-    def check_name(self):
-        if not self.name_fa and not self.name_en:
-            raise ValidationError({'name_fa': 'error'})
-
     class Meta:
         verbose_name = 'شرکت'
         verbose_name_plural = "شرکت"

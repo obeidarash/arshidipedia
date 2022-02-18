@@ -1,9 +1,14 @@
 from django.contrib import admin
-from .models import Sell
+from .models import Comment, Post
 
 
-@admin.register(Sell)
-class SellAdmin(admin.ModelAdmin):
-    list_display = ('to_user',)
-    search_fields = ('to_user',)
-    autocomplete_fields = ('to_user', 'to_company')
+class CommentInline(admin.TabularInline):
+    model = Comment
+    fields = ('content', 'is_published', 'added_date')
+    readonly_fields = ('added_date',)
+    extra = 1
+
+
+@admin.register(Post)
+class PostAdmin(admin.ModelAdmin):
+    inlines = (CommentInline,)

@@ -18,6 +18,7 @@ def new_home(request):
         'pays': pays,
         'incomes': incomes,
     }
+
     return render(request, 'index.html', context)
 
 
@@ -34,7 +35,7 @@ def home(request):
         'official_incomes': income_official_account,
         'sum_of_official_incomes': sum_income_official_account,
     }
-
+    print(pay_employer_partner)
     return render(request, 'index.html', context)
 
 
@@ -48,7 +49,7 @@ def search(request):
         companies = Company.objects.filter(Q(name_en__icontains=query) | Q(name_fa__icontains=query))
         contacts = Contact.objects.filter(Q(name_fa__icontains=query) | Q(name_en__icontains=query) |
                                           Q(lastname_en__icontains=query) | Q(lastname_fa__icontains=query))
-    print(companies)
+
     context = {
         'companies': companies,
         'contacts': contacts,
