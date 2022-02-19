@@ -2,6 +2,19 @@ from django.db import models
 from accounting.models import Contact, Company
 
 
+class Invoice(models.Model):
+    to_contact = models.ForeignKey(Contact, blank=False, null=False, on_delete=models.CASCADE)
+    to_company = models.ForeignKey(Company, blank=False, null=False, on_delete=models.CASCADE)
+
+
+class Satellite(models.Model):
+    name = models.CharField(max_length=128, blank=False, null=False)
+    slug = models.SlugField(max_length=128, null=False, blank=False, unique=True)
+
+
+class InvoiceItem(models.Model):
+    Invoice = models.ForeignKey(Invoice, blank=False, null=False, on_delete=models.CASCADE)
+    satellite = models.ForeignKey(Satellite, blank=False, null=False, on_delete=models.CASCADE)
 
 
 class Post(models.Model):

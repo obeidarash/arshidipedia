@@ -1,5 +1,20 @@
 from django.contrib import admin
-from .models import Comment, Post
+from .models import Comment, Post, InvoiceItem, Invoice, Satellite
+
+
+class InvoiceItemInline(admin.TabularInline):
+    model = InvoiceItem
+    extra = 1
+
+
+@admin.register(Invoice)
+class PostAdmin(admin.ModelAdmin):
+    inlines = (InvoiceItemInline,)
+
+
+@admin.register(Satellite)
+class SatelliteAdmin(admin.ModelAdmin):
+    pass
 
 
 class CommentInline(admin.TabularInline):
