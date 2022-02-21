@@ -10,6 +10,7 @@ urlpatterns = [
     path('', new_home),
     path('tinymce/', include('tinymce.urls')),
     path('contacts/', include('contacts.urls')),
+    path('invoice/', include('sell.urls')),
     path('search/', search, name='search'),
 ]
 
