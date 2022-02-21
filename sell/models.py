@@ -7,14 +7,15 @@ class Invoice(models.Model):
     to_company = models.ForeignKey(Company, blank=False, null=False, on_delete=models.CASCADE)
 
 
-class Satellite(models.Model):
+class Product(models.Model):
     name = models.CharField(max_length=128, blank=False, null=False)
     slug = models.SlugField(max_length=128, null=False, blank=False, unique=True)
 
 
 class InvoiceItem(models.Model):
     Invoice = models.ForeignKey(Invoice, blank=False, null=False, on_delete=models.CASCADE)
-    satellite = models.ForeignKey(Satellite, blank=False, null=False, on_delete=models.CASCADE)
+    satellite = models.ForeignKey(Product, blank=False, null=False, on_delete=models.CASCADE)
+    price = models.BigIntegerField(null=False, blank=False, verbose_name="مبلغ")
 
 
 class Post(models.Model):
