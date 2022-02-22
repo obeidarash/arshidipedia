@@ -9,7 +9,7 @@ def invoice(request, invoice_id):
     invoice_item = InvoiceItem.objects.filter(Invoice_id=invoice_id)
     count = 0
     for item in invoice_item:
-        count += item.price
+        count += item.quantity * item.price
     context = {
         'invoice': invoice,
         'invoice_item': invoice_item,

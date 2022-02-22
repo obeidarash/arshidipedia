@@ -2,10 +2,10 @@ import os
 from django.db import models
 from django.contrib.auth.models import User
 from contacts.models import Contact, Company
+from sell.models import Invoice
 from django.dispatch import receiver
 import uuid
 from django_jalali.db import models as jmodels
-
 
 CURRENCY = [
     ('IRR', 'Rial'),
@@ -184,6 +184,8 @@ class Income(models.Model):
                                         verbose_name="به حساب بانکی")
     from_contact = models.ForeignKey(Contact, null=True, blank=True, on_delete=models.CASCADE, verbose_name="شخص")
     from_company = models.ForeignKey(Company, null=True, blank=True, on_delete=models.CASCADE, verbose_name="شرکت")
+    invoice = models.ForeignKey(Invoice, null=True, blank=True, on_delete=models.CASCADE,
+                                     verbose_name="بابت فاکتور")
     comment = models.TextField(null=True, blank=True, verbose_name="توضیحات")
     objects = IncomeManager()
 
@@ -251,6 +253,7 @@ class Pay(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     objects = PayManager()
+
     # objects = jmodels.jManager()
 
     # todo: upload invoice

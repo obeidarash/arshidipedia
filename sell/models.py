@@ -7,6 +7,7 @@ class Invoice(models.Model):
     company = models.ForeignKey(Company, blank=True, null=True, on_delete=models.CASCADE, verbose_name='شرکت')
     date = models.DateField(null=False, blank=False, verbose_name="تاریخ")
     is_payed = models.BooleanField(default=False, verbose_name='پرداخت شده؟')
+    is_cancel = models.BooleanField(default=False, verbose_name='لغو شده؟')
     description = models.TextField(max_length=2048, null=True, blank=True, verbose_name='توضیحات')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
