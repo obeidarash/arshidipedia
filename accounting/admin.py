@@ -40,7 +40,7 @@ class CategoryAdmin(admin.ModelAdmin):
 class IncomeAdmin(admin.ModelAdmin):
     list_display = ('title', 'price')
     search_fields = ('title',)
-    autocomplete_fields = ('from_contact', 'from_company',)
+    autocomplete_fields = ('from_contact', 'from_company', 'invoice',)
 
 
 @admin.register(BankAccount)

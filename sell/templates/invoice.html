@@ -6,6 +6,11 @@
     <link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}">
     <link rel="stylesheet" href="{% static "css/custom.css" %}">
     <title>Invoice</title>
+    <style>
+        body {
+            background-color: black;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
@@ -73,22 +78,69 @@
                             <td></td>
                             <td></td>
                             <td>
-                                <b>{{ count }}</b>
+                                <b>{{ invoice_price_count }}</b>
                             </td>
                         </tr>
                         </tbody>
                     </table>
-                    {% if invoice.is_payed %}
-                        <button class="btn btn-success">پرداخت شده</button>
-                    {% else %}
-                        <button class="btn btn-danger">پرداخت نشده</button>
-                    {% endif %}
                     <button class="btn btn-warning">ثبت سفارش</button>
                     <button class="btn btn-info">تکمیل شده</button>
                     <button class="btn btn-primary">ارسال شده</button>
                     <button class="btn btn-outline-danger">لغو شده</button>
                 </div>
+
+                {% if incomes %}
+                    <div class="container">
+                        <h5>پرداخت ها</h5>
+                        <hr>
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>ردیف</th>
+                                <th>تاریخ</th>
+                                <th>مبلغ</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for income in incomes %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ income.date }}</td>
+                                    <td>{{ income.price }}</td>
+                                </tr>
+                            {% endfor %}
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <b>{{ income_price_count }}</b>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                {% endif %}
+
+                <div class="container">
+                    <h5>بالانس</h5>
+                    <hr>
+                    {% if income_price_count %}
+                        {% if income_price_count == invoice_price_count %}
+                            <button class="btn btn-success">پرداخت شده</button>
+                        {% elif invoice_price_count > income_price_count %}
+                            <button class="btn btn-warning">قسمتی پرداخت شده</button>
+                        {% else %}
+                            <button class="btn btn-info">بستانکار</button>
+                        {% endif %}
+                    {% else %}
+                        <button class="btn btn-danger">هیچ مبلغی پرداخت نشده</button>
+                    {% endif %}
+
+                </div>
+
             </div>
+
+
         </div>
         <div class="col-lg-2"></div>
     </div>

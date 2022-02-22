@@ -5,14 +5,15 @@ from .forms import InvoiceAdminForm
 
 class InvoiceItemInline(admin.TabularInline):
     model = InvoiceItem
-    extra = 0
+    extra = 1
 
 
 @admin.register(Invoice)
 class InvoiceAdmin(admin.ModelAdmin):
     form = InvoiceAdminForm
     inlines = (InvoiceItemInline,)
-    list_display = ("__str__", 'is_payed', 'date', 'link_to_invoice',)
+    list_display = ("__str__", 'date', 'link_to_invoice',)
+    search_fields = ('id',)
 
     def link_to_invoice(self, obj):
         # todo: create url in html

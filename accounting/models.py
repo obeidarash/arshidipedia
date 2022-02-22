@@ -186,6 +186,7 @@ class Income(models.Model):
     from_company = models.ForeignKey(Company, null=True, blank=True, on_delete=models.CASCADE, verbose_name="شرکت")
     invoice = models.ForeignKey(Invoice, null=True, blank=True, on_delete=models.CASCADE,
                                      verbose_name="بابت فاکتور")
+    date = models.DateField(null=False, blank=False, verbose_name="تاریخ")
     comment = models.TextField(null=True, blank=True, verbose_name="توضیحات")
     objects = IncomeManager()
 
