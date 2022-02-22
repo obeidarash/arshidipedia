@@ -12,7 +12,7 @@
     <div class="row">
 
         <div class="col-lg-2"></div>
-        <div class="col-lg-8">
+        <div class="col-lg-8 col-md-12 col-sm-12">
 
             <nav class="navbar navbar-light bg-light">
                 <div class="container-fluid">
@@ -39,15 +39,22 @@
                             </div>
                         </div>
                     {% endif %}
-
+                    {% if invoice.description %}
+                        <div class="row">
+                            <div class="col">
+                                <div style="font-weight: bold">توضیحات</div>
+                                {{ invoice.description }}
+                            </div>
+                        </div>
+                    {% endif %}
                     <table class="table">
                         <thead>
                         <tr>
-                            <th scope="col">ردیف</th>
-                            <th scope="col">محصول</th>
-                            <th scope="col">واحد</th>
-                            <th scope="col">تعداد</th>
-                            <th scope="col">مبلغ</th>
+                            <th>ردیف</th>
+                            <th>نام</th>
+                            <th>واحد</th>
+                            <th>مقدار</th>
+                            <th>مبلغ</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -66,7 +73,7 @@
                             <td></td>
                             <td></td>
                             <td>
-                              <b>{{ count }}</b>
+                                <b>{{ count }}</b>
                             </td>
                         </tr>
                         </tbody>
