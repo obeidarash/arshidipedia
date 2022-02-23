@@ -60,6 +60,7 @@
                             <th>واحد</th>
                             <th>مقدار</th>
                             <th>مبلغ</th>
+                            <th>جمع</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -70,9 +71,11 @@
                                 <td>{{ item.product.unit }}</td>
                                 <td>{{ item.quantity }}</td>
                                 <td>{{ item.price }}</td>
+                                <td></td>
                             </tr>
                         {% endfor %}
                         <tr>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -83,16 +86,11 @@
                         </tr>
                         </tbody>
                     </table>
-                    <button class="btn btn-warning">ثبت سفارش</button>
-                    <button class="btn btn-info">تکمیل شده</button>
-                    <button class="btn btn-primary">ارسال شده</button>
-                    <button class="btn btn-outline-danger">لغو شده</button>
                 </div>
 
                 {% if incomes %}
                     <div class="container">
                         <h5>پرداخت ها</h5>
-                        <hr>
                         <table class="table">
                             <thead>
                             <tr>

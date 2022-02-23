@@ -1,5 +1,11 @@
 from django.contrib import admin
-from .models import Letter, Hashtag
+from .models import Letter, Hashtag, Employer
+
+
+@admin.register(Employer)
+class EmployerAdmin(admin.ModelAdmin):
+    list_display = ('__str__', 'birthdate',)
+    search_fields = ('name_fa', 'lastname_fa', 'lastname_en', 'name_en',)
 
 
 @admin.register(Letter)

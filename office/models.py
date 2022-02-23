@@ -4,6 +4,22 @@ from contacts.models import Contact, Company
 from tinymce.models import HTMLField
 
 
+class Employer(models.Model):
+    name_fa = models.CharField(max_length=64, null=False, blank=False, verbose_name="نام به فارسی")
+    lastname_fa = models.CharField(max_length=64, null=False, blank=False, verbose_name="نام خانوادگی به فارسی")
+    name_en = models.CharField(max_length=64, null=False, blank=False, verbose_name="نام به انگلیسی")
+    lastname_en = models.CharField(max_length=64, null=False, blank=False, verbose_name="نام خانوادگی به انگلیسی")
+    national_code = models.CharField(max_length=32, null=True, blank=True, verbose_name='کد ملی')
+    birthdate = models.DateField(null=True, blank=True, verbose_name='تاریخ تولد')
+
+    class Meta:
+        verbose_name_plural = 'کارمند'
+        verbose_name = 'کارمند'
+
+    def __str__(self):
+        return self.name_fa + " " + self.lastname_fa
+
+
 class Hashtag(models.Model):
     name = models.CharField(max_length=64, null=False, blank=False, unique=True, verbose_name="نام")
     slug = models.SlugField(max_length=128, null=False, blank=False, unique=True,
