@@ -57,7 +57,7 @@ class Contact(models.Model):
     website = models.URLField(max_length=512, null=True, blank=True, validators=[URLValidator, ],
                               verbose_name="وب سایت")
     national_code = models.CharField(max_length=32, null=True, blank=True, verbose_name="کد ملی")
-    hashtag = models.ManyToManyField(Hashtag, verbose_name="برچسب")
+    hashtag = models.ManyToManyField(Hashtag, verbose_name="برچسب", blank=True)
     comment = models.TextField(max_length=2048, null=True, blank=True, verbose_name="توضیحات")
 
     # todo: add email in here

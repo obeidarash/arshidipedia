@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from contacts.models import Contact, Company
 from sell.models import Invoice
+from office.models import Employer
 from django.dispatch import receiver
 import uuid
 from django_jalali.db import models as jmodels
@@ -11,71 +12,6 @@ CURRENCY = [
     ('IRR', 'Rial'),
     ('USD', 'US Dollar'),
 ]
-
-
-class SalaryManager(models.Manager):
-    def salary(self):
-        salary = self.get_queryset().filter(to__is_superuser=False)
-        return salary
-
-
-class PayManager(models.Manager):
-    # returns pays base on employer and user is worker (not supersuer)
-    # returns salaries of worker user
-    # it will calculate the salaries of the worker
-    # def pay_employer_worker(self):
-    #     users = User.objects.filter(is_superuser=False)
-    #     pays = self.get_queryset().filter(source='employer', payer__is_superuser=False)
-    #     salaries = Salary.objects.all()
-    #     sals = []
-    #     costs = []
-    #     all_payments = []
-    #     for user in users:
-    #         for pay in pays:
-    #             if user.id == pay.payer.id:
-    #                 costs.append(int(pay.price))
-    #             payments = {
-    #                 'user': user.username,
-    #                 'costs': costs,
-    #                 'sum': sum(costs)
-    #             }
-    #         for salary in salaries:
-    #             if user.id == salary.to.id:
-    #                 sals.append(int(salary.price))
-    #             payments['salaries'] = sals
-    #             payments['salaries_sum'] = sum(sals)
-    #             payments['calculate_salary'] = sum(sals) - sum(costs)
-    #         all_payments.append(payments)
-    #         sals = []
-    #         costs = []
-    #     return all_payments
-
-    # returns pays base on employer source and partner (is_superuser)
-    def pay_employer_partner(self):
-        users = User.objects.filter(is_superuser=True)
-        pays = self.get_queryset().filter(source='employer', payer__is_superuser=True)
-        funds = Fund.objects.all()
-        costs = []
-        all_payments = []
-        user_funds = []
-        for user in users:
-            for pay in pays:
-                if user.id == pay.payer.id:
-                    costs.append(int(pay.price))
-                payments = {
-                    'user': user.username,
-                    'costs': costs,
-                    'sum': sum(costs)
-                }
-            for fund in funds:
-                if user.id == fund.user.id:
-                    user_funds.append(int(fund.price))
-                    payments['funds'] = user_funds
-                    payments['funds_sum'] = sum(user_funds)
-            all_payments.append(payments)
-            costs = []
-            user_funds = []
-        return all_payments
 
 
 class IncomeManager(models.Manager):
@@ -157,7 +93,7 @@ class BankAccount(models.Model):
 
 
 class Salary(models.Model):
-    to = models.ForeignKey(User, null=False, blank=False, on_delete=models.CASCADE, default=False,
+    to = models.ForeignKey(Employer, null=False, blank=False, on_delete=models.CASCADE, default=False,
                            verbose_name="به حساب کارمند")
     price = models.CharField(max_length=32, null=False, blank=False, verbose_name="مبلغ")
     price_currency = models.CharField(max_length=32, choices=CURRENCY, null=False, blank=True, default=CURRENCY[0],
@@ -168,7 +104,6 @@ class Salary(models.Model):
     comment = models.TextField(null=True, blank=True, verbose_name="توضیحات")
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    objects = SalaryManager()
 
     class Meta:
         verbose_name = 'تنخواه'
@@ -185,7 +120,7 @@ class Income(models.Model):
     from_contact = models.ForeignKey(Contact, null=True, blank=True, on_delete=models.CASCADE, verbose_name="شخص")
     from_company = models.ForeignKey(Company, null=True, blank=True, on_delete=models.CASCADE, verbose_name="شرکت")
     invoice = models.ForeignKey(Invoice, null=True, blank=True, on_delete=models.CASCADE,
-                                     verbose_name="بابت فاکتور")
+                                verbose_name="بابت فاکتور")
     date = models.DateField(null=False, blank=False, verbose_name="تاریخ")
     comment = models.TextField(null=True, blank=True, verbose_name="توضیحات")
     objects = IncomeManager()
@@ -199,7 +134,7 @@ class Income(models.Model):
 
 
 class Fund(models.Model):
-    user = models.ForeignKey(User, null=False, blank=False, on_delete=models.CASCADE, default=False,
+    user = models.ForeignKey(Employer, null=False, blank=False, on_delete=models.CASCADE, default=False,
                              help_text="کارمندی را انتخاب کنید که در شرکت شریک است",
                              verbose_name="شریک")
     price = models.CharField(max_length=32, null=False, blank=False, verbose_name="هزینه")
@@ -234,26 +169,25 @@ class Pay(models.Model):
     taxation = models.CharField(max_length=32, null=True, blank=True, verbose_name="مالیات")
     taxation_currency = models.CharField(max_length=32, choices=CURRENCY, null=False, blank=True, default=CURRENCY[0],
                                          verbose_name="واحد پول مالیات")
-    to = models.CharField(max_length=256, null=True, blank=False, help_text='Like Seven Host or Korosh Walmart',
+    to = models.CharField(max_length=256, null=True, blank=False, help_text='مانند افق کوروش یا اسنپ باکس',
                           verbose_name="به حساب")
-    payer = models.ForeignKey(User, null=False, blank=False, on_delete=models.CASCADE, default=False,
+    payer = models.ForeignKey(Employer, null=False, blank=False, on_delete=models.CASCADE, default=False,
                               verbose_name="پرداخت کننده")
     # todo: study about on_delete
     source = models.CharField(max_length=32, choices=SOURCE, null=False, blank=False, default=SOURCE[0],
-                              help_text='it means you spend money form your pocket or the company',
+                              help_text='پرداخت کننده از جیب خودش خرج کرده یا حساب شرکت؟',
                               verbose_name="منبع پرداخت")
     account = models.ForeignKey(BankAccount, null=True, blank=True, on_delete=models.CASCADE, default=False,
                                 verbose_name="حساب بانکی")
     date_of_payment = models.DateField(null=False, blank=False, verbose_name="تاریخ پرداخت")
     # date_of_payment = jmodels.jDateField()
     invoice = models.CharField(max_length=64, choices=INVOICE, null=False, blank=False,
-                               default=(('no_invoice'), ('No Invoice')), verbose_name="وضعیت فاکتور")
+                               default=('no_invoice', 'No Invoice'), verbose_name="وضعیت فاکتور")
     category = models.ForeignKey(Category, null=False, blank=False, on_delete=models.CASCADE, verbose_name="دسته بندی")
     attach = models.FileField(upload_to='pay', blank=True, null=True, verbose_name="پیوست")
     comment = models.TextField(max_length=2048, null=True, blank=True, verbose_name="توضیحات")
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    objects = PayManager()
 
     # objects = jmodels.jManager()
 
