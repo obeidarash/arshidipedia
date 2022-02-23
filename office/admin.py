@@ -13,7 +13,7 @@ class LetterAdmin(admin.ModelAdmin):
     list_display = ('subject', 'to_contact', 'to_company',)
     search_fields = ('to_company', 'to_company',)
     list_filter = ('date',)
-    autocomplete_fields = ('to_contact', 'to_company', 'hashtag')
+    autocomplete_fields = ('to_contact', 'to_company', 'hashtag', 'writer')
 
 
 @admin.register(Hashtag)

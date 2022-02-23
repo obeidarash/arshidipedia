@@ -15,6 +15,8 @@ class Employer(models.Model):
     class Meta:
         verbose_name_plural = 'کارمند'
         verbose_name = 'کارمند'
+        unique_together = ('national_code',)
+        ordering = ['-lastname_fa']
 
     def __str__(self):
         return self.name_fa + " " + self.lastname_fa
@@ -51,7 +53,7 @@ class Letter(models.Model):
     number = models.CharField(max_length=64, blank=False, null=False, verbose_name="شماره")
     subject = models.CharField(max_length=512, blank=False, null=False, verbose_name="موضوع")
     date = models.DateField(null=False, blank=False, verbose_name="تاریخ")
-    writer = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE, verbose_name="نویسنده")
+    writer = models.ForeignKey(Employer, null=True, blank=True, on_delete=models.CASCADE, verbose_name="نویسنده")
     # todo: do something to sing (Emza konnande)
     # sign = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
     send_with = models.CharField(max_length=32, choices=SEND, null=True, blank=True, default=('delivery', 'پیک'),
