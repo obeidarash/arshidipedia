@@ -7,6 +7,8 @@ class InvoiceAdminForm(forms.ModelForm):
         model = Invoice
         fields = "__all__"
 
-    def check_both_fields(self):
-        if self.cleaned_data['company'] == 'null' and self.cleaned_data['contact'] == 'null':
-            raise forms.ValidationError('Both cant be empty!')
+    def clean(self):
+        if not self.cleaned_data['contact'] and not self.cleaned_data['company']:
+            raise forms.ValidationError('مخاطب و شرکت نمیتوانند همزمان خالی باشند')
+        elif self.cleaned_data['contact'] and self.cleaned_data['company']:
+            raise forms.ValidationError('مخاطب و شرکت نمیتوانند همزمان پر باشند')

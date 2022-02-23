@@ -1,6 +1,9 @@
 from django.contrib import admin
 from .models import InvoiceItem, Invoice, Product
 from .forms import InvoiceAdminForm
+from django.utils.html import format_html, urlencode
+from django.urls import reverse
+from django.forms import ValidationError
 
 
 class InvoiceItemInline(admin.TabularInline):
@@ -16,8 +19,7 @@ class InvoiceAdmin(admin.ModelAdmin):
     search_fields = ('id',)
 
     def link_to_invoice(self, obj):
-        # todo: create url in html
-        return f"<a href=\"invoice/{obj.id}\" target=\"_blank\"></a>"
+        return format_html('<a href="{}" target="_blank">Go to invoice</a>', reverse('invoice', args=(obj.id,)))
 
     link_to_invoice.short_description = 'link'
 
