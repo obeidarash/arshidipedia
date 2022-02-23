@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Pay, Category, BankAccount, Income, OfficialInvoices, Salary, Fund
+from .forms import IncomeAdminForm
 
 
 @admin.register(Fund)
@@ -38,9 +39,10 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Income)
 class IncomeAdmin(admin.ModelAdmin):
+    form = IncomeAdminForm
     list_display = ('title', 'price')
     search_fields = ('title',)
-    autocomplete_fields = ('from_contact', 'from_company', 'invoice',)
+    autocomplete_fields = ('contact', 'company', 'invoice',)
 
 
 @admin.register(BankAccount)

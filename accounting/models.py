@@ -117,8 +117,8 @@ class Income(models.Model):
                                       verbose_name="واحد پول دریافتی")
     to_bank_account = models.ForeignKey(BankAccount, null=False, blank=False, on_delete=models.CASCADE,
                                         verbose_name="به حساب بانکی")
-    from_contact = models.ForeignKey(Contact, null=True, blank=True, on_delete=models.CASCADE, verbose_name="شخص")
-    from_company = models.ForeignKey(Company, null=True, blank=True, on_delete=models.CASCADE, verbose_name="شرکت")
+    contact = models.ForeignKey(Contact, null=True, blank=True, on_delete=models.CASCADE, verbose_name="شخص")
+    company = models.ForeignKey(Company, null=True, blank=True, on_delete=models.CASCADE, verbose_name="شرکت")
     invoice = models.ForeignKey(Invoice, null=True, blank=True, on_delete=models.CASCADE,
                                 verbose_name="بابت فاکتور")
     date = models.DateField(null=False, blank=False, verbose_name="تاریخ")
