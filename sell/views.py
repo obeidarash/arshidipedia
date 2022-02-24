@@ -14,7 +14,7 @@ def invoice(request, invoice_id):
     # count sum of invoice price
     invoice_price_count = 0
     for item in invoice_item:
-        invoice_price_count += item.quantity * item.price
+        invoice_price_count += item.quantity * item.product.price
 
     # count sum of income price
     income_price_count = 0

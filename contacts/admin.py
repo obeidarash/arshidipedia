@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Contact, Company, Address, Hashtag
-
+from .forms import ContactAdminForm
 
 @admin.register(Hashtag)
 class HashtagAdmin(admin.ModelAdmin):
@@ -24,6 +24,7 @@ class CompanyAdmin(admin.ModelAdmin):
 
 @admin.register(Contact)
 class ContactAdmin(admin.ModelAdmin):
+    form = ContactAdminForm
     list_display = ('name_fa', 'lastname_fa', 'gender',)
     search_fields = ('name_fa', 'lastname_fa',)
     autocomplete_fields = ('hashtag',)

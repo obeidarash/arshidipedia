@@ -7,6 +7,7 @@ from django.forms import ValidationError
 
 
 class InvoiceItemInline(admin.TabularInline):
+    autocomplete_fields = ('product',)
     model = InvoiceItem
     extra = 1
 

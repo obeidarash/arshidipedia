@@ -43,7 +43,7 @@ class Address(models.Model):
 class Contact(models.Model):
     GENDER = (('mr', 'آقا'), ('ms', 'خانم'))
     name_fa = models.CharField(max_length=64, null=True, blank=True, verbose_name="نام به فارسی")
-    lastname_fa = models.CharField(max_length=64, null=False, blank=False, verbose_name="نام خانوادگی به انگلیسی")
+    lastname_fa = models.CharField(max_length=64, null=True, blank=True, verbose_name="نام خانوادگی به فارسی")
     name_en = models.CharField(max_length=64, null=True, blank=True, verbose_name="نام به انگلیسی")
     lastname_en = models.CharField(max_length=64, null=True, blank=True, verbose_name="نام خانوادگی به انگلیسی")
     gender = models.CharField(max_length=16, choices=GENDER, null=False, blank=False, verbose_name="جنسیت")
@@ -62,11 +62,6 @@ class Contact(models.Model):
 
     # todo: add email in here
     # todo: add validator to the tables
-
-    def __str__(self):
-        if self.name_fa:
-            return self.name_fa + " " + self.lastname_fa
-        return self.lastname_fa
 
     class Meta:
         verbose_name = 'مخاطب'
