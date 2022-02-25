@@ -7,7 +7,7 @@ from django.forms import ValidationError
 
 
 class InvoiceItemInline(admin.TabularInline):
-    autocomplete_fields = ('product',)
+    # autocomplete_fields = ('product',)
     model = InvoiceItem
     extra = 1
 
@@ -20,6 +20,7 @@ class InvoiceAdmin(admin.ModelAdmin):
     inlines = (InvoiceItemInline,)
     list_display = ("__str__", 'date', 'link_to_invoice',)
     search_fields = ('id',)
+    autocomplete_fields = ('contact', 'company')
 
     def link_to_invoice(self, obj):
         return format_html('<a href="{}" target="_blank">Go to invoice</a>', reverse('invoice', args=(obj.id,)))

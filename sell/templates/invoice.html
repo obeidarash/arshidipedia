@@ -27,15 +27,19 @@
                         <div class="row">
                             <div class="col">
                                 <div style="font-weight: bold">نام و نام خانوادگی</div>
-                                {{ invoice.contact }}
+                                {{ invoice.contact.name_fa }} {{ invoice.contact.lastname_fa }}
                             </div>
                             <div class="col">
                                 <div style="font-weight: bold">کد ملی</div>
-                                {{ invoice.contact.national_code }}
+                                {% if invoice.contact.national_code %}
+                                    {{ invoice.contact.national_code }}
+                                {% endif %}
                             </div>
                             <div class="col">
                                 <div style="font-weight: bold">موبایل</div>
-                                {{ invoice.contact.mobile_1 }}
+                                {% if invoice.contact.mobile_1 %}
+                                    {{ invoice.contact.mobile_1 }}
+                                {% endif %}
                             </div>
                         </div>
                     {% endif %}
@@ -54,6 +58,7 @@
                             <th>نام</th>
                             <th>واحد</th>
                             <th>مقدار</th>
+                            <th>تخفیف</th>
                             <th>مبلغ</th>
                             <th>جمع</th>
                         </tr>
@@ -62,10 +67,11 @@
                         {% for item in invoice_item %}
                             <tr>
                                 <td>{{ forloop.counter }}</td>
-                                <td>{{ item.product.name }}</td>
-                                <td>{{ item.product.unit }}</td>
+                                <td>{{ item.name }}</td>
+                                <td>{{ item.unit }}</td>
                                 <td>{{ item.quantity }}</td>
-                                <td>{{ item.product.price }}</td>
+                                <td>{{ item.discount }}</td>
+                                <td>{{ item.price }}</td>
                                 <td></td>
                             </tr>
                         {% endfor %}

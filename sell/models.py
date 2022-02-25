@@ -30,16 +30,23 @@ class Product(models.Model):
     price = models.BigIntegerField(null=False, blank=False, verbose_name='قیمت')
     slug = models.SlugField(max_length=128, null=False, blank=False, unique=True)
     unit = models.CharField(max_length=128, blank=False, null=False, verbose_name='واحد')
+
     class Meta:
         verbose_name = 'محصولات'
         verbose_name_plural = 'محصولات'
+
     def __str__(self):
         return self.name
 
+
 class InvoiceItem(models.Model):
+    # todo: connect invoice item to product correctly
     product = models.ForeignKey(Product, blank=False, null=False, on_delete=models.CASCADE, verbose_name='محصول')
+    name = models.CharField(max_length=128, blank=False, null=False, verbose_name='نام')
     quantity = models.IntegerField(null=False, blank=False, verbose_name='مقدار')
+    unit = models.CharField(max_length=128, blank=False, null=False, verbose_name='واحد')
     price = models.BigIntegerField(null=False, blank=False, verbose_name='قیمت')
+    discount = models.IntegerField(default=0, blank=True, null=True, help_text='به درصد', verbose_name='تخفیف')
     Invoice = models.ForeignKey(Invoice, blank=False, null=False, on_delete=models.CASCADE)
 
     class Meta:

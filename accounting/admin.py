@@ -1,6 +1,8 @@
 from django.contrib import admin
 from .models import Pay, Category, BankAccount, Income, OfficialInvoices, Salary, Fund
 from .forms import IncomeAdminForm, OfficialInvoicesAdminForm
+from django.http import HttpResponse
+import csv
 
 
 @admin.register(Fund)
@@ -30,10 +32,24 @@ class OfficialInvoicesAdmin(admin.ModelAdmin):
 class PayAdmin(admin.ModelAdmin):
     fields = ['title', ('price', 'price_currency'), ('fee', 'fee_currency'), ('taxation', 'taxation_currency'),
               ('account', 'to'), 'category', 'date', 'payer', 'source', 'invoice', 'attach', 'comment']
-    list_display = ('title', 'category', 'price', 'source',)
+    list_display = ('title', 'category', 'price', 'source', 'date')
     search_fields = ('title', 'price',)
     autocomplete_fields = ('category',)
     list_filter = ['account', 'date', 'source']
+    actions = ('export_as_csv',)
+
+    def export_as_csv(self, request, queryset):
+        meta = self.model._meta
+        field_names = [field.name for field in meta.fields]
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename={}.csv'.format(meta)
+        writer = csv.writer(response)
+        writer.writerow(field_names)
+        for obj in queryset:
+            row = writer.writerow([getattr(obj, field) for field in field_names])
+        return response
+
+    export_as_csv.short_description = "گرفتن خروجی اکسل"
 
 
 @admin.register(Category)
