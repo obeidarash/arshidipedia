@@ -101,9 +101,3 @@ class Company(models.Model):
         return "No name!"
 
 
-# todo: fix the raise error
-# this is work but wont show the error in the correct way
-@receiver(pre_save, sender=Company)
-def check_name(sender, instance, **kwargs):
-    if not instance.name_fa and not instance.name_en:
-        raise ValidationError({'name_en': 'error'})

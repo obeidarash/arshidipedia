@@ -24,10 +24,12 @@ class OfficialInvoicesAdmin(admin.ModelAdmin):
 
 @admin.register(Pay)
 class PayAdmin(admin.ModelAdmin):
+    fields = ['title', ('price', 'price_currency'), ('fee', 'fee_currency'), ('taxation', 'taxation_currency'),
+              ('account', 'to'), 'category', 'date', 'payer', 'source', 'invoice', 'attach', 'comment']
     list_display = ('title', 'category', 'price', 'source',)
     search_fields = ('title', 'price',)
-    autocomplete_fields = ('category',)
-    list_filter = ['account', 'date_of_payment', 'source']
+    autocomplete_fields = ('category', )
+    list_filter = ['account', 'date', 'source']
 
 
 @admin.register(Category)

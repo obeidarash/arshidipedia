@@ -1,5 +1,7 @@
 from django.db import models
 from accounting.models import Contact, Company
+from django.dispatch import receiver
+from django.db.models.signals import pre_save
 
 
 class Invoice(models.Model):
@@ -28,14 +30,11 @@ class Product(models.Model):
     price = models.BigIntegerField(null=False, blank=False, verbose_name='قیمت')
     slug = models.SlugField(max_length=128, null=False, blank=False, unique=True)
     unit = models.CharField(max_length=128, blank=False, null=False, verbose_name='واحد')
-
     class Meta:
         verbose_name = 'محصولات'
         verbose_name_plural = 'محصولات'
-
     def __str__(self):
         return self.name
-
 
 class InvoiceItem(models.Model):
     product = models.ForeignKey(Product, blank=False, null=False, on_delete=models.CASCADE, verbose_name='محصول')

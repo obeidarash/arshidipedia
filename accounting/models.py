@@ -160,13 +160,13 @@ class Pay(models.Model):
         ('company', 'شرکت')
     ]
     title = models.CharField(max_length=256, null=False, blank=False, verbose_name="موضوع")
-    price = models.IntegerField(null=False, blank=False, verbose_name="مقدار هزینه")
+    price = models.BigIntegerField(null=False, blank=False, verbose_name="مقدار هزینه")
     price_currency = models.CharField(max_length=32, choices=CURRENCY, null=False, blank=True, default=CURRENCY[0],
-                                      verbose_name="واحد پول")
-    fee = models.CharField(max_length=32, null=True, blank=True, verbose_name="کارمزد")
-    fe_currency = models.CharField(max_length=32, choices=CURRENCY, null=False, blank=True, default=CURRENCY[0],
-                                   verbose_name="واحد پول کارمزد")
-    taxation = models.CharField(max_length=32, null=True, blank=True, verbose_name="مالیات")
+                                      verbose_name="واحد هزینه")
+    fee = models.BigIntegerField(null=True, blank=True, verbose_name="کارمزد")
+    fee_currency = models.CharField(max_length=32, choices=CURRENCY, null=False, blank=True, default=CURRENCY[0],
+                                    verbose_name="واحد پول کارمزد")
+    taxation = models.BigIntegerField(null=True, blank=True, verbose_name="مالیات")
     taxation_currency = models.CharField(max_length=32, choices=CURRENCY, null=False, blank=True, default=CURRENCY[0],
                                          verbose_name="واحد پول مالیات")
     to = models.CharField(max_length=256, null=True, blank=False, help_text='مانند افق کوروش یا اسنپ باکس',
@@ -178,8 +178,8 @@ class Pay(models.Model):
                               help_text='پرداخت کننده از جیب خودش خرج کرده یا حساب شرکت؟',
                               verbose_name="منبع پرداخت")
     account = models.ForeignKey(BankAccount, null=True, blank=True, on_delete=models.CASCADE, default=False,
-                                verbose_name="حساب بانکی")
-    date_of_payment = models.DateField(null=False, blank=False, verbose_name="تاریخ پرداخت")
+                                verbose_name="از حساب بانکی")
+    date = models.DateField(null=False, blank=False, verbose_name="تاریخ پرداخت")
     # date_of_payment = jmodels.jDateField()
     invoice = models.CharField(max_length=64, choices=INVOICE, null=False, blank=False,
                                default=('no_invoice', 'No Invoice'), verbose_name="وضعیت فاکتور")

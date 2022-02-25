@@ -11,6 +11,8 @@ class InvoiceItemInline(admin.TabularInline):
     model = InvoiceItem
     extra = 1
 
+    # prepopulated_fields = {'price': ['product.price', ]}
+
 
 @admin.register(Invoice)
 class InvoiceAdmin(admin.ModelAdmin):
