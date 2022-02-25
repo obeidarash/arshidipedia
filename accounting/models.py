@@ -116,7 +116,7 @@ class Income(models.Model):
     price = models.CharField(max_length=32, null=False, blank=False, verbose_name="مبلغ")
     price_currency = models.CharField(max_length=32, choices=CURRENCY, null=False, blank=True, default=CURRENCY[0],
                                       verbose_name="واحد پول دریافتی")
-    to_bank_account = models.ForeignKey(BankAccount, null=False, blank=False, on_delete=models.CASCADE,
+    account = models.ForeignKey(BankAccount, null=False, blank=False, on_delete=models.CASCADE,
                                         verbose_name="به حساب بانکی")
     contact = models.ForeignKey(Contact, null=True, blank=True, on_delete=models.CASCADE, verbose_name="شخص")
     company = models.ForeignKey(Company, null=True, blank=True, on_delete=models.CASCADE, verbose_name="شرکت")
@@ -138,10 +138,10 @@ class Fund(models.Model):
     user = models.ForeignKey(Employer, null=False, blank=False, on_delete=models.CASCADE, default=False,
                              help_text="کارمندی را انتخاب کنید که در شرکت شریک است",
                              verbose_name="شریک")
-    price = models.CharField(max_length=32, null=False, blank=False, verbose_name="هزینه")
+    price = models.BigIntegerField(null=False, blank=False, verbose_name="هزینه")
     price_currency = models.CharField(max_length=32, choices=CURRENCY, null=False, blank=True, default=CURRENCY[0],
                                       verbose_name="واحد پول هزینه")
-    to_bank_account = models.ForeignKey(BankAccount, null=False, blank=False, on_delete=models.CASCADE,
+    account = models.ForeignKey(BankAccount, null=False, blank=False, on_delete=models.CASCADE,
                                         verbose_name="به حساب بانکی")
     comment = models.TextField(null=True, blank=True, verbose_name="توضیحات")
 

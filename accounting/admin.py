@@ -5,6 +5,7 @@ from .forms import IncomeAdminForm, OfficialInvoicesAdminForm
 
 @admin.register(Fund)
 class FundAdmin(admin.ModelAdmin):
+    fields = [('price', 'price_currency'), 'user', 'account', 'comment']
     list_display = ('user', 'price')
     search_fields = ('user',)
 
@@ -48,6 +49,7 @@ class IncomeAdmin(admin.ModelAdmin):
     list_display = ('title', 'price')
     search_fields = ('title',)
     autocomplete_fields = ('contact', 'company', 'invoice',)
+    list_filter = ('date', 'account')
 
 
 @admin.register(BankAccount)

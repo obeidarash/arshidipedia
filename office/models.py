@@ -10,6 +10,7 @@ class Employer(models.Model):
     name_en = models.CharField(max_length=64, null=False, blank=False, verbose_name="نام به انگلیسی")
     lastname_en = models.CharField(max_length=64, null=False, blank=False, verbose_name="نام خانوادگی به انگلیسی")
     national_code = models.CharField(max_length=32, null=True, blank=True, verbose_name='کد ملی')
+    partner = models.BooleanField(default=False, verbose_name='شریک است؟')
     birthdate = models.DateField(null=True, blank=True, verbose_name='تاریخ تولد')
 
     class Meta:

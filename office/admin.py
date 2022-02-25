@@ -4,8 +4,9 @@ from .models import Letter, Hashtag, Employer
 
 @admin.register(Employer)
 class EmployerAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'birthdate',)
+    list_display = ('__str__', 'birthdate', 'partner',)
     search_fields = ('name_fa', 'lastname_fa', 'lastname_en', 'name_en',)
+    list_filter = ('partner',)
 
 
 @admin.register(Letter)
