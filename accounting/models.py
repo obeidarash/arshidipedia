@@ -5,11 +5,9 @@ from contacts.models import Contact, Company
 from sell.models import Invoice
 from office.models import Employer
 from django.dispatch import receiver
-import uuid
-from django_jalali.db import models as jmodels
 
 CURRENCY = [
-    ('IRR', 'Rial'),
+    ('IRR', 'ریال'),
     ('USD', 'US Dollar'),
 ]
 
@@ -78,9 +76,9 @@ class Category(models.Model):
 class BankAccount(models.Model):
     title = models.CharField(max_length=256, null=False, blank=False, verbose_name="توضیح")
     bank = models.CharField(max_length=256, null=False, blank=False, verbose_name="نام بانک")
-    card_number = models.CharField(max_length=256, null=False, blank=False, unique=True, verbose_name="شماره کارت")
-    account_number = models.CharField(max_length=256, null=False, blank=False, unique=True, verbose_name="شماره حساب")
-    shaba = models.CharField(max_length=256, null=False, blank=False, unique=True, verbose_name="شبا")
+    card_number = models.CharField(max_length=256, null=True, blank=True, unique=True, verbose_name="شماره کارت")
+    account_number = models.CharField(max_length=256, null=True, blank=True, unique=True, verbose_name="شماره حساب")
+    shaba = models.CharField(max_length=256, null=True, blank=True, unique=True, verbose_name="شبا")
     is_official = models.BooleanField(default=False, verbose_name="حساب رسمی است؟")
     comment = models.TextField(null=True, blank=True, verbose_name="توضیحات")
 
@@ -95,15 +93,18 @@ class BankAccount(models.Model):
 class Salary(models.Model):
     to = models.ForeignKey(Employer, null=False, blank=False, on_delete=models.CASCADE, default=False,
                            verbose_name="به حساب کارمند")
-    price = models.CharField(max_length=32, null=False, blank=False, verbose_name="مبلغ")
+    price = models.BigIntegerField(null=False, blank=False, verbose_name="مبلغ")
     price_currency = models.CharField(max_length=32, choices=CURRENCY, null=False, blank=True, default=CURRENCY[0],
                                       verbose_name="واحد پول مبلغ")
     bank_account = models.ForeignKey(BankAccount, null=False, blank=False, on_delete=models.CASCADE,
                                      verbose_name="از حساب بانکی")
-    date_of_payment = models.DateField(null=False, blank=False, verbose_name="تاریخ پرداخت")
+    date = models.DateField(null=False, blank=False, verbose_name="تاریخ پرداخت")
     comment = models.TextField(null=True, blank=True, verbose_name="توضیحات")
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.to) + " / " + str(self.price)
 
     class Meta:
         verbose_name = 'تنخواه'
@@ -173,14 +174,12 @@ class Pay(models.Model):
                           verbose_name="به حساب")
     payer = models.ForeignKey(Employer, null=False, blank=False, on_delete=models.CASCADE, default=False,
                               verbose_name="پرداخت کننده")
-    # todo: study about on_delete
     source = models.CharField(max_length=32, choices=SOURCE, null=False, blank=False, default=SOURCE[0],
                               help_text='پرداخت کننده از جیب خودش خرج کرده یا حساب شرکت؟',
                               verbose_name="منبع پرداخت")
     account = models.ForeignKey(BankAccount, null=True, blank=True, on_delete=models.CASCADE, default=False,
                                 verbose_name="از حساب بانکی")
     date = models.DateField(null=False, blank=False, verbose_name="تاریخ پرداخت")
-    # date_of_payment = jmodels.jDateField()
     invoice = models.CharField(max_length=64, choices=INVOICE, null=False, blank=False,
                                default=('no_invoice', 'No Invoice'), verbose_name="وضعیت فاکتور")
     category = models.ForeignKey(Category, null=False, blank=False, on_delete=models.CASCADE, verbose_name="دسته بندی")
@@ -189,11 +188,11 @@ class Pay(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
-    # objects = jmodels.jManager()
-
+    # todo: study about on_delete
     # todo: upload invoice
     # todo: add Shamsi date of payment
     # todo: add the payer - pardakht konandeh
+    # todo: create a media model for attachments
 
     def __str__(self):
         return self.title

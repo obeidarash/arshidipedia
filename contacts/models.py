@@ -62,7 +62,7 @@ class Contact(models.Model):
 
     # todo: add email in here
     # todo: add validator to the tables
-
+    # todo: add __str__
     class Meta:
         verbose_name = 'مخاطب'
         verbose_name_plural = "مخاطب"
