@@ -7,6 +7,7 @@ from django.db.models.signals import pre_save
 class Invoice(models.Model):
     contact = models.ForeignKey(Contact, blank=True, null=True, on_delete=models.CASCADE, verbose_name='مخاطب')
     company = models.ForeignKey(Company, blank=True, null=True, on_delete=models.CASCADE, verbose_name='شرکت')
+    # date = models.DateField(null=False, blank=False, verbose_name="تاریخ")
     date = models.DateField(null=False, blank=False, verbose_name="تاریخ")
     is_cancel = models.BooleanField(default=False, verbose_name='لغو شده؟')
     description = models.TextField(max_length=2048, null=True, blank=True, verbose_name='توضیحات')
