@@ -25,12 +25,13 @@ class InvoiceAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     autocomplete_fields = ('contact', 'company')
 
     def get_created_jalali(self, obj):
-        return datetime2jalali(obj.created).strftime('%y/%m/%d _ %H:%M:%S')
+        return datetime2jalali(obj.date).strftime('%y/%m/%d _ %H:%M:%S')
 
     def link_to_invoice(self, obj):
         return format_html('<a href="{}" target="_blank">Go to invoice</a>', reverse('invoice', args=(obj.id,)))
 
     link_to_invoice.short_description = 'link'
+    get_created_jalali.short_description = 'تاریخ شمسی'
 
 
 @admin.register(Product)

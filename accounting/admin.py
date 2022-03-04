@@ -2,6 +2,8 @@ from django.contrib import admin
 from .models import Pay, Category, BankAccount, Income, OfficialInvoices, Salary, Fund
 from .forms import IncomeAdminForm, OfficialInvoicesAdminForm
 from django.http import HttpResponse
+from jalali_date import date2jalali, datetime2jalali
+from jalali_date.admin import ModelAdminJalaliMixin, StackedInlineJalaliMixin, TabularInlineJalaliMixin
 import csv
 
 
@@ -29,14 +31,17 @@ class OfficialInvoicesAdmin(admin.ModelAdmin):
 
 
 @admin.register(Pay)
-class PayAdmin(admin.ModelAdmin):
+class PayAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     fields = ['title', ('price', 'price_currency'), ('fee', 'fee_currency'), ('taxation', 'taxation_currency'),
               ('account', 'to'), 'category', 'date', 'payer', 'source', 'invoice', 'attach', 'comment']
-    list_display = ('title', 'category', 'price', 'source', 'date')
+    list_display = ('title', 'category', 'price', 'source', 'get_created_jalali')
     search_fields = ('title', 'price',)
     autocomplete_fields = ('category',)
     list_filter = ['account', 'date', 'source']
     actions = ('export_as_csv',)
+
+    def get_created_jalali(self, obj):
+        return datetime2jalali(obj.date).strftime('%y/%m/%d _ %H:%M:%S')
 
     def export_as_csv(self, request, queryset):
         meta = self.model._meta
@@ -50,6 +55,7 @@ class PayAdmin(admin.ModelAdmin):
         return response
 
     export_as_csv.short_description = "گرفتن خروجی اکسل"
+    get_created_jalali.short_description = "تاریخ هزینه"
 
 
 @admin.register(Category)
