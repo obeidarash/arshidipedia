@@ -1,5 +1,7 @@
 from django.contrib import admin
 from .models import Letter, Hashtag, Employer
+from jalali_date import date2jalali, datetime2jalali
+from jalali_date.admin import ModelAdminJalaliMixin, StackedInlineJalaliMixin, TabularInlineJalaliMixin
 
 
 @admin.register(Employer)

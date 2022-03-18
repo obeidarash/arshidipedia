@@ -17,21 +17,17 @@ class InvoiceItemInline(admin.TabularInline):
 
 
 @admin.register(Invoice)
-class InvoiceAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
+class InvoiceAdmin(admin.ModelAdmin):
     form = InvoiceAdminForm
     inlines = (InvoiceItemInline,)
-    list_display = ("__str__", 'date', 'link_to_invoice', 'get_created_jalali')
+    list_display = ("__str__", 'date', 'link_to_invoice', )
     search_fields = ('id',)
     autocomplete_fields = ('contact', 'company')
-
-    def get_created_jalali(self, obj):
-        return datetime2jalali(obj.date).strftime('%y/%m/%d _ %H:%M:%S')
 
     def link_to_invoice(self, obj):
         return format_html('<a href="{}" target="_blank">Go to invoice</a>', reverse('invoice', args=(obj.id,)))
 
     link_to_invoice.short_description = 'link'
-    get_created_jalali.short_description = 'تاریخ شمسی'
 
 
 @admin.register(Product)

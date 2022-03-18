@@ -10,13 +10,13 @@ import csv
 @admin.register(Fund)
 class FundAdmin(admin.ModelAdmin):
     fields = [('price', 'price_currency'), 'user', 'account', 'comment']
-    list_display = ('user', 'price')
+    list_display = ('user', 'price',)
     search_fields = ('user',)
 
 
 @admin.register(Salary)
 class SalaryAdmin(admin.ModelAdmin):
-    list_display = ('to', 'price')
+    list_display = ('to', 'price',)
     search_fields = ('to',)
     list_filter = ('to', 'bank_account', 'date')
 
@@ -55,7 +55,7 @@ class PayAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
         return response
 
     export_as_csv.short_description = "گرفتن خروجی اکسل"
-    get_created_jalali.short_description = "تاریخ هزینه"
+    get_created_jalali.short_description = "تاریخ شمسی"
 
 
 @admin.register(Category)
