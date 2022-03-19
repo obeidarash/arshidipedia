@@ -15,10 +15,15 @@ class FundAdmin(admin.ModelAdmin):
 
 
 @admin.register(Salary)
-class SalaryAdmin(admin.ModelAdmin):
-    list_display = ('to', 'price',)
+class SalaryAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
+    list_display = ('to', 'price', 'get_created_jalali')
     search_fields = ('to',)
     list_filter = ('to', 'bank_account', 'date')
+
+    def get_created_jalali(self, obj):
+        return date2jalali(obj.date).strftime('%y/%m/%d')
+
+    get_created_jalali.short_description = "تاریخ"
 
 
 @admin.register(OfficialInvoices)
