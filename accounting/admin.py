@@ -41,7 +41,7 @@ class PayAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     actions = ('export_as_csv',)
 
     def get_created_jalali(self, obj):
-        return datetime2jalali(obj.date).strftime('%y/%m/%d _ %H:%M:%S')
+        return date2jalali(obj.date).strftime('%y/%m/%d')
 
     def export_as_csv(self, request, queryset):
         meta = self.model._meta
@@ -58,20 +58,25 @@ class PayAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     get_created_jalali.short_description = "تاریخ شمسی"
 
 
+@admin.register(Income)
+class IncomeAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
+    form = IncomeAdminForm
+    list_display = ('title', 'price', 'get_created_jalali')
+    search_fields = ('title',)
+    autocomplete_fields = ('contact', 'company', 'invoice',)
+    list_filter = ('date', 'account')
+
+    def get_created_jalali(self, obj):
+        return date2jalali(obj.date).strftime('%y/%m/%d')
+
+    get_created_jalali.short_description = "تاریخ شمسی"
+
+
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('title', 'slug')
     search_fields = ('title',)
     prepopulated_fields = {"slug": ("title",)}
-
-
-@admin.register(Income)
-class IncomeAdmin(admin.ModelAdmin):
-    form = IncomeAdminForm
-    list_display = ('title', 'price')
-    search_fields = ('title',)
-    autocomplete_fields = ('contact', 'company', 'invoice',)
-    list_filter = ('date', 'account')
 
 
 @admin.register(BankAccount)

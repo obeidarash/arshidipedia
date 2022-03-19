@@ -179,7 +179,7 @@ class Pay(models.Model):
                               verbose_name="منبع پرداخت")
     account = models.ForeignKey(BankAccount, null=True, blank=True, on_delete=models.CASCADE, default=False,
                                 verbose_name="از حساب بانکی")
-    date = models.DateTimeField(null=False, blank=False, verbose_name="تاریخ پرداخت")
+    date = models.DateField(null=False, blank=False, verbose_name="تاریخ پرداخت")
     invoice = models.CharField(max_length=64, choices=INVOICE, null=False, blank=False,
                                default=('no_invoice', 'No Invoice'), verbose_name="وضعیت فاکتور")
     category = models.ForeignKey(Category, null=False, blank=False, on_delete=models.CASCADE, verbose_name="دسته بندی")

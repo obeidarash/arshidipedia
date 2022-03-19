@@ -20,7 +20,7 @@ class InvoiceItemInline(admin.TabularInline):
 class InvoiceAdmin(admin.ModelAdmin):
     form = InvoiceAdminForm
     inlines = (InvoiceItemInline,)
-    list_display = ("__str__", 'date', 'link_to_invoice', )
+    list_display = ("__str__", 'date', 'link_to_invoice')
     search_fields = ('id',)
     autocomplete_fields = ('contact', 'company')
 
