@@ -22,12 +22,18 @@ class SalaryAdmin(admin.ModelAdmin):
 
 
 @admin.register(OfficialInvoices)
-class OfficialInvoicesAdmin(admin.ModelAdmin):
+class OfficialInvoicesAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     form = OfficialInvoicesAdminForm
-    list_display = ('title', 'location', 'date_of_invoice', 'status', 'employer_signature')
+    list_display = ('title', 'location', 'date_of_invoice', 'status', 'employer_signature', 'get_created_jalali')
     search_fields = ('title',)
     autocomplete_fields = ('contact', 'company',)
+
     # list_editable = ('employer_signature',)
+
+    def get_created_jalali(self, obj):
+        return date2jalali(obj.date_of_invoice).strftime('%y/%m/%d')
+
+    get_created_jalali.short_description = "تاریخ"
 
 
 @admin.register(Pay)
