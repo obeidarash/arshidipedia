@@ -64,6 +64,9 @@ class Letter(models.Model):
     content = HTMLField(null=False, blank=False, verbose_name="متن نامه")
     hashtag = models.ManyToManyField(Hashtag, verbose_name="برچسب", blank=True)
 
+    def __str__(self):
+        return self.subject
+
     class Meta:
         verbose_name = 'نامه'
         verbose_name_plural = "نامه"

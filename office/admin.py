@@ -12,11 +12,16 @@ class EmployerAdmin(admin.ModelAdmin):
 
 
 @admin.register(Letter)
-class LetterAdmin(admin.ModelAdmin):
-    list_display = ('subject', 'to_contact', 'to_company',)
+class LetterAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
+    list_display = ('subject', 'to_contact', 'to_company', 'get_created_jalali')
     search_fields = ('to_company', 'to_company',)
     list_filter = ('date',)
     autocomplete_fields = ('to_contact', 'to_company', 'hashtag', 'writer')
+
+    def get_created_jalali(self, obj):
+        return date2jalali(obj.date).strftime('%y/%m/%d')
+
+    get_created_jalali.short_description = "تاریخ"
 
 
 @admin.register(Hashtag)
