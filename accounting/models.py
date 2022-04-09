@@ -76,6 +76,7 @@ class Category(models.Model):
 class BankAccount(models.Model):
     title = models.CharField(max_length=256, null=False, blank=False, verbose_name="توضیح")
     bank = models.CharField(max_length=256, null=False, blank=False, verbose_name="نام بانک")
+    bank_branch = models.CharField(max_length=256, null=True, blank=True, verbose_name='شعبه بانک')
     card_number = models.CharField(max_length=256, null=True, blank=True, unique=True, verbose_name="شماره کارت")
     account_number = models.CharField(max_length=256, null=True, blank=True, unique=True, verbose_name="شماره حساب")
     shaba = models.CharField(max_length=256, null=True, blank=True, unique=True, verbose_name="شبا")
@@ -117,7 +118,7 @@ class Income(models.Model):
     price_currency = models.CharField(max_length=32, choices=CURRENCY, null=False, blank=True, default=CURRENCY[0],
                                       verbose_name="واحد پول دریافتی")
     account = models.ForeignKey(BankAccount, null=False, blank=False, on_delete=models.CASCADE,
-                                        verbose_name="به حساب بانکی")
+                                verbose_name="به حساب بانکی")
     contact = models.ForeignKey(Contact, null=True, blank=True, on_delete=models.CASCADE, verbose_name="شخص")
     company = models.ForeignKey(Company, null=True, blank=True, on_delete=models.CASCADE, verbose_name="شرکت")
     invoice = models.ForeignKey(Invoice, null=True, blank=True, on_delete=models.CASCADE,
@@ -142,7 +143,7 @@ class Fund(models.Model):
     price_currency = models.CharField(max_length=32, choices=CURRENCY, null=False, blank=True, default=CURRENCY[0],
                                       verbose_name="واحد پول هزینه")
     account = models.ForeignKey(BankAccount, null=False, blank=False, on_delete=models.CASCADE,
-                                        verbose_name="به حساب بانکی")
+                                verbose_name="به حساب بانکی")
     comment = models.TextField(null=True, blank=True, verbose_name="توضیحات")
 
     class Meta:
@@ -190,8 +191,6 @@ class Pay(models.Model):
 
     # todo: study about on_delete
     # todo: upload invoice
-    # todo: add Shamsi date of payment
-    # todo: add the payer - pardakht konandeh
     # todo: create a media model for attachments
 
     def __str__(self):

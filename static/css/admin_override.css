@@ -1,10 +1,10 @@
 
 @font-face {
-    font-family: "Noto Sans Arabic";
-    src: url('font/NotoSansArabic-Medium.ttf') format('ttf');
+    font-family: "Lalezar";
+    src: url('../font/Lalezar-Regular.ttf');
 }
 
 body {
-    font-family: 'Noto Sans Arabic', serif;
+    font-family: 'Lalezar', serif;
 }
 
